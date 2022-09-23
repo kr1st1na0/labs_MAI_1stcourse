@@ -1,0 +1,231 @@
+
+kristina@kristina-VirtualBox:~$ ls
+ snap    Документы   Изображения   Общедоступные   Шаблоны
+ Видео   Загрузки    Музыка       'Рабочий стол'
+kristina@kristina-VirtualBox:~$ ls -1
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+'Рабочий стол'
+Шаблоны
+kristina@kristina-VirtualBox:~$ ls -A
+ .bash_history   .emacs.d           snap                        Изображения
+ .bash_logout    .gnuplot_history   .sudo_as_admin_successful   Музыка
+ .bashrc         .lesshst           Видео                       Общедоступные
+ .cache          .local             Документы                  'Рабочий стол'
+ .config         .profile           Загрузки                    Шаблоны
+kristina@kristina-VirtualBox:~$ ls -lAF
+итого 76
+-rw-------  1 kristina kristina  207 сен 14 15:48  .bash_history
+-rw-r--r--  1 kristina kristina  220 сен 14 00:16  .bash_logout
+-rw-r--r--  1 kristina kristina 3771 сен 14 00:16  .bashrc
+drwx------ 10 kristina kristina 4096 сен 14 00:23  .cache/
+drwx------ 11 kristina kristina 4096 сен 16 13:29  .config/
+drwx------  2 kristina kristina 4096 сен 14 00:28  .emacs.d/
+-rw-------  1 kristina kristina   40 сен 14 00:27  .gnuplot_history
+-rw-------  1 kristina kristina   20 сен 14 17:16  .lesshst
+drwx------  3 kristina kristina 4096 сен 14 00:21  .local/
+-rw-r--r--  1 kristina kristina  807 сен 14 00:16  .profile
+drwx------  4 kristina kristina 4096 сен 14 17:30  snap/
+-rw-r--r--  1 kristina kristina    0 сен 14 00:27  .sudo_as_admin_successful
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Видео/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Документы/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Загрузки/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Изображения/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Музыка/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Общедоступные/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21 'Рабочий стол'/
+drwxr-xr-x  2 kristina kristina 4096 сен 14 00:21  Шаблоны/
+kristina@kristina-VirtualBox:~$ whoami
+kristina
+kristina@kristina-VirtualBox:~$ hostname
+kristina-VirtualBox
+kristina@kristina-VirtualBox:~$ date
+Ср 21 сен 2022 18:04:00 MSK
+kristina@kristina-VirtualBox:~$ tty
+/dev/pts/0
+kristina@kristina-VirtualBox:~$ uname -a
+Linux kristina-VirtualBox 5.15.0-47-generic #51-Ubuntu SMP Thu Aug 11 07:51:15 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+kristina@kristina-VirtualBox:~$ finger kristina
+Login: kristina       			Name: kristina
+Directory: /home/kristina           	Shell: /bin/bash
+On since Thu Sep 22 13:38 (MSK) on tty2 from tty2
+   1 minute 40 seconds idle
+No mail.
+No Plan.
+kristina@kristina-VirtualBox:~$ pwd
+/home/kristina
+kristina@kristina-VirtualBox:~$ sudo ruptime
+[sudo] пароль для kristina: 
+kristina-Vir  up       0:01,     0 users,  load 0.80, 0.16, 0.05
+kristina@kristina-VirtualBox:~$ sudo rwho
+kristina@kristina-VirtualBox:~$ uptime
+ 18:13:06 up 53 min,  1 user,  load average: 0,47, 0,32, 0,26
+kristina@kristina-VirtualBox:~$ man ls
+kristina@kristina-VirtualBox:~$ cd /
+kristina@kristina-VirtualBox:/$ ls
+bin    dev   lib    libx32      mnt   root  snap      sys  var
+boot   etc   lib32  lost+found  opt   run   srv       tmp
+cdrom  home  lib64  media       proc  sbin  swapfile  usr
+kristina@kristina-VirtualBox:/$ cd /bin
+kristina@kristina-VirtualBox:/bin$ cd ..
+kristina@kristina-VirtualBox:~$ cat > f1.txt
+test file
+kristina@kristina-VirtualBox:~$ ls
+ f1.txt   Видео       Загрузки      Музыка         'Рабочий стол'
+ snap     Документы   Изображения   Общедоступные   Шаблоны
+kristina@kristina-VirtualBox:~$ cat f1.txt
+test file
+kristina@kristina-VirtualBox:~$ emacs f1.txt
+kristina@kristina-VirtualBox:~$ cp f1.txt f2.txt
+kristina@kristina-VirtualBox:~$ ls
+ f1.txt   snap    Документы   Изображения   Общедоступные   Шаблоны
+ f2.txt   Видео   Загрузки    Музыка       'Рабочий стол'
+kristina@kristina-VirtualBox:~$ cat f2.txt
+test file
+kristina@kristina-VirtualBox:~$ cat f1.txt f2.txt > f3.txt
+kristina@kristina-VirtualBox:~$ ls
+ f1.txt   f3.txt   Видео       Загрузки      Музыка         'Рабочий стол'
+ f2.txt   snap     Документы   Изображения   Общедоступные   Шаблоны
+kristina@kristina-VirtualBox:~$ cat f3.txt
+test file
+test file
+kristina@kristina-VirtualBox:~$ rm f2.txt
+kristina@kristina-VirtualBox:~$ rm f3.txt
+kristina@kristina-VirtualBox:~$ ls
+ f1.txt   Видео       Загрузки      Музыка         'Рабочий стол'
+ snap     Документы   Изображения   Общедоступные   Шаблоны
+kristina@kristina-VirtualBox:~$ mkdir course
+kristina@kristina-VirtualBox:~$ ls -1
+course
+f1.txt
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+'Рабочий стол'
+Шаблоны
+kristina@kristina-VirtualBox:~$ mv f1.txt course
+kristina@kristina-VirtualBox:~$ ls -1
+course
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+'Рабочий стол'
+Шаблоны
+kristina@kristina-VirtualBox:~$ cd course
+kristina@kristina-VirtualBox:~/course$ ls -1
+f1.txt
+kristina@kristina-VirtualBox:~/course$ cd ..
+kristina@kristina-VirtualBox:~$ ls -1
+course
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+'Рабочий стол'
+Шаблоны
+kristina@kristina-VirtualBox:~$ rmdir course
+rmdir: не удалось удалить 'course': Каталог не пуст
+kristina@kristina-VirtualBox:~$ cd course
+kristina@kristina-VirtualBox:~/course$ rm f1.txt
+kristina@kristina-VirtualBox:~/course$ cd ..
+kristina@kristina-VirtualBox:~$ rmdir course
+kristina@kristina-VirtualBox:~$ ls -1
+snap
+Видео
+Документы
+Загрузки
+Изображения
+Музыка
+Общедоступные
+'Рабочий стол'
+Шаблоны
+kristina@kristina-VirtualBox:~$ gnuplot
+
+	G N U P L O T
+	Version 5.4 patchlevel 2    last modified 2021-06-01 
+
+	Copyright (C) 1986-1993, 1998, 2004, 2007-2021
+	Thomas Williams, Colin Kelley and many others
+
+	gnuplot home:     http://www.gnuplot.info
+	faq, bugs, etc:   type "help FAQ"
+	immediate help:   type "help"  (plot window: hit 'h')
+
+Terminal type is now 'qt'
+gnuplot> plot sin(x)*cos(x)
+Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+gnuplot> set parametric
+
+	dummy variable is t for curves, u/v for surfaces
+gnuplot> set trange [0 to 2*pi]
+gnuplot> set xrange [-1 to 1]
+gnuplot> set yrange [-1 to 1]
+gnuplot> plot sin(t),cos(t)
+gnuplot> set zrange [-1 to 1]
+gnuplot> set urange [0 to 2*pi]
+gnuplot> set vrange [0 to 2*pi]
+gnuplot> unset hidden3d
+gnuplot> splot sin(u)*sin(v),sin(u)*cos(v),cos(u)
+gnuplot> unset parametric
+gnuplot> set term dumb
+
+Terminal type is now 'dumb'
+Options are 'feed  size 79, 24 aspect 2, 1 mono'
+gnuplot> plot sin(x)*cos(x)
+                                                                               
+  0.5 +--------------------------------------------------------------------+   
+      |   * *        * *        **       + **        * *  +      **        |   
+  0.4 |-+*  *        * *        **        * *        *i*(x)*cos(*)********-|   
+      |  *  *       *  *       *  *       * *        * *        * *       *|   
+  0.3 |-+*  *       *  *       *  *       *  *       * *       *   *     +*|   
+      |  *  *       *  *      *   *       *  *      *   *      *   *      *|   
+  0.2 |-+*   *      *  *      *    *      *  *      *   *      *   *     +*|   
+      |  *   *     *    *     *    *     *    *     *   *     *    *      *|   
+  0.1 |-*    *     *    *     *    *     *    *     *   *     *    *     +*|   
+      | *    *     *    *     *    *     *    *    *     *    *    *      *|   
+    0 |-*     *    *    *     *    *     *    *    *     *    *     *    *-|   
+      | *     *    *     *    *    *    *     *    *     *    *     *    * |   
+ -0.1 |*+     *    *     *    *    *    *     *    *     *    *     *    *-|   
+      |*      *    *     *   *      *   *     *    *      *   *     *   *  |   
+ -0.2 |*+     *   *      *   *      *   *     *    *      *   *      *  *+-|   
+      |*      *   *       *  *      *  *       *   *      *  *       *  *  |   
+ -0.3 |*+     *   *       * *       *  *       *  *       *  *       *  *+-|   
+      |*       * *        * *        * *       *  *       *  *       *  *  |   
+ -0.4 |*+      * *        * *        * *        * *       * *        *  *+-|   
+      |         **     +  * *        * * +      **        +**        *  *  |   
+ -0.5 +--------------------------------------------------------------------+   
+     -10              -5                 0                5                10  
+                                                                               
+gnuplot> exit
+kristina@kristina-VirtualBox:~$ touch myscript
+kristina@kristina-VirtualBox:~$ chmod +x ./myscript
+kristina@kristina-VirtualBox:~$ ./myscript
+kristina
+kristina@kristina-VirtualBox:~$ ls
+ f1.txt     snap    Документы   Изображения   Общедоступные   Шаблоны
+ myscript   Видео   Загрузки    Музыка       'Рабочий стол'
+kristina@kristina-VirtualBox:~$ cat f1.txt
+Hello, world!
+kristina@kristina-VirtualBox:~$ rm f1.txt
+kristina@kristina-VirtualBox:~$ rm myscript
+kristina@kristina-VirtualBox:~$ ls
+ snap    Документы   Изображения   Общедоступные   Шаблоны
+ Видео   Загрузки    Музыка       'Рабочий стол'
+kristina@kristina-VirtualBox:~$ exit
+
