@@ -8,11 +8,11 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5 (отлично)</ins>
 
-<b>Отчет сдан</b> «22» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «22» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins>5 (отлично)</ins>
 
-<b>Подпись преподавателя:</b> ________________
+<b>Подпись преподавателя:</b> ___________
 
 ## 1. Тема
 Лабораторная работа №9 по курсу информатики
@@ -55,65 +55,6 @@
 ```
 #include <stdio.h>
 #include <math.h>
-#include <locale.h>
-
-int sign(int q) {
-	if (q > 0) {
-		return 1;
-	}
-	if (q == 0) {
-		return 0;
-	}
-	if (q < 0) {
-		return -1;
-	}
-}
-
-int max(int a, int b) {
-	if (a > b) {
-		return a;
-	}
-	else {
-		return b;
-	}
-}
-
-int main() {
-	setlocale(LC_ALL, "Russian");
-	int i = 0, j = -3, l = -7, k = 0, i1, j1;
-	while (k <= 51) {
-		if (k == 51) {
-			printf("Не попали в заданную область. Конечные координаты точки: (%d, %d), значение динамического параметра движения: %d, шаг: 50.\n", i, j, l);
-            break;
-		}
-		if ((((i - 10) * (i - 10) + (j - 10) * (j - 10)) <= 100) && (((i - 10) * (i - 10) + (j - 10) * (j - 10)) >= 25)) {
-			printf("На шаге номер %d попали в заданную область.\n", k);
-			break;
-		}
-		i1 = i;
-		j1 = j;
-		i = abs((i1 - j1 + l) / (3 - sign(i1 - j1 + k))) + 10;
-		j = abs((i1 + j1 - l) / (3 - sign(j1 - i1 + k))) + 10;
-		l = ((max(i1 * j1, j1 * l) * (k + 1)) % 40 + 40) % 40;
-		k += 1;
-	}
-	return 0;
-}
-```
-
-Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
-Допущен к выполнению работы.  
-<b>Подпись преподавателя</b> ________________
-## 8. Распечатка протокола 
-```
-kristina@kristina-VirtualBox:~$ cd Рабочий\ стол/
-kristina@kristina-VirtualBox:~/Рабочий стол$ cd lab8-9
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9$ cd lab9
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ emacs lab9.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ cat lab9.c
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
 
 int sign(int q) {
     if (q > 0) {
@@ -128,25 +69,18 @@ int sign(int q) {
 }
 
 int max(int a, int b) {
-    if (a > b) {
-        return a;
-    }
-    else {
-        return b;
-    }
+    return a > b ?  a : b;
 }
 
 int main() {
-    setlocale(LC_ALL, "Russian");
     int i = 0, j = -3, l = -7, k = 0, i1, j1;
     while (k <= 51) {
         if (k == 51) {
-            printf("i = %d, j = %d, l = %d, k = %d.\n", i, j, l, k);
-            printf("Не попали в заданную область.\n Время окончания движения: k = ", k, "Конечные координаты точки: (%d, %d), значение динамического параметра движения: %d, шаг: 50.\n");
+            printf("The point was not in the specified area. The final coordinates of the point: (%d, %d),  the value of the dynamic motion parameter: %d, the step: 50.\n", i, j, l);
             break;
         }
         if ((((i - 10) * (i - 10) + (j - 10) * (j - 10)) <= 100) && (((i - 10) * (i - 10) + (j - 10) * (j - 10)) >= 25)) {
-            printf("На шаге номер %d попали в заданную область.\n", k);
+            printf("At the step number %d the point was in the specified area.\n", k);
             break;
         }
         i1 = i;
@@ -158,9 +92,18 @@ int main() {
     }
     return 0;
 }
+```
+
+Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
+Допущен к выполнению работы.  
+<b>Подпись преподавателя</b> ________________
+## 8. Распечатка протокола 
+```
+kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ emacs lab9.c
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ cc lab9.c
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ ./a.out lab9.c
-На шаге номер 10 попали в заданную область.
+kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ ./a.out lab9.c
+At the step number 10 the point was in the specified area.
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ exit
 ```
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
@@ -169,8 +112,50 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ exit
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 22.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+Написание программы на Си для ознакомления с синтаксисом языка:
 ```
--
+#include <stdio.h>
+
+#define N (4)
+
+char alphabet[N] = { '0', '1', '2', '3' };
+
+int permutation(int n, char result[N]);
+
+int main(void) {
+    char result[N];
+    int f;
+    scanf("%d", &f);
+    permutation(f, result);
+    printf("\n");
+    for (int i = 0; i < N; ++i)
+        printf("%c ", result[i]);
+    return 0;
+}
+
+
+int permutation(int n, char result[N]) {
+    int representation[4] = { 0 };
+    for (int i = 1; i < N + 1; ++i) {
+        representation[i - 1] = n % i;
+        n /= i;
+    }
+    for (int i = 0; i < N; ++i)
+        result[i] = alphabet[i];
+    
+    for (int i = N - 1; i > 0; --i) {
+        int j = representation[i];
+        char temp = result[j];
+        for (; j < i; ++j)
+            result[j] = result[j + 1];
+        result[i] = temp;
+    }
+    for (int i = 0; i < N / 2; ++i) {
+        char h = result[i];
+        result[i] = result[N - i - 1];
+        result[N - i - 1] = h;
+    }
+}
 ```
 ## 11. Выводы
 Была написана и отлажены простейшая программа на языке на Си. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.

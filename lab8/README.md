@@ -1,4 +1,4 @@
-# Отчёт по лабораторной работе №8 по курсам “Основы информатики” и "Программно-аппаратные средства информатики"
+# Отчёт по лабораторной работе №8 по курсу "Фундаментальная информатика"
 
 <b>Студент группы:</b> <ins>М80-108Б-22 Былькова Кристина Алексеевна, № по списку 2</ins> 
 
@@ -8,11 +8,11 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5 (отлично)</ins>
 
-<b>Отчет сдан</b> «22» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «22» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins>5 (отлично)</ins>
 
-<b>Подпись преподавателя:</b> ________________
+<b>Подпись преподавателя:</b> ___________
 
 ## 1. Тема
 Системы программирования на языке Си
@@ -47,12 +47,32 @@
 <b>Местонахождение и имена файлов программ и данных на домашнем компьютере:</b> /home/kristina
 
 ## 6. Идея, метод, алгоритм решения задачи (в формах: словесной, псевдокода, графической [блок-схема, диаграмма, рисунок, таблица] или формальные спецификации с пред- и постусловиями)
-Необходимо скомпилировать написанную программу, устранить ошибки в коде, если они имеются.
+Написание кода с синтаксической ошибкой:
+```
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n")
+    printf("AAA\n")
+}
+```
+Исправление ошибки:
+```
+#include <stdio.h>
+
+int main() {
+  printf("Hello, World!\n");
+  printf("AAA\n");
+}
+```
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию]. 
 1. Запуск редактора текстов emacs;
 2. Ввод текста программы;
 3. Компиляция программы;
-4. Запуск программы.
+4. Вывод ошибки;
+5. Исправление ошибки;
+6. Компиляция исправленной программы;
+7. Запуск программы.
 
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
 Допущен к выполнению работы.  
@@ -63,13 +83,6 @@ kristina@kristina-VirtualBox:~$ cd Рабочий\ стол/
 kristina@kristina-VirtualBox:~/Рабочий стол$ cd lab8-9
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9$ cd lab8
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ emacs lab8.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ cat lab8.c
-#include <stdio.h>
-
-int main() {
-    printf("Hello, World!\n")
-    printf("AAA\n")
-}
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ cc lab8.c
 lab8.c: In function ‘main’:
 lab8.c:4:30: error: expected ‘;’ before ‘printf’
@@ -79,13 +92,6 @@ lab8.c:4:30: error: expected ‘;’ before ‘printf’
     5 |     printf("AAA\n")
       |     ~~~~~~                    
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ emacs lab8.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ cat lab8.c
-#include <stdio.h>
-
-int main() {
-  printf("Hello, World!\n");
-  printf("AAA\n");
-}
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ cc lab8.c
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ ./a.out lab8.c
 Hello, World!
@@ -98,8 +104,51 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab8$ exit
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 22.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+Выполнение задания для освоения языка Си:
 ```
--
+#include <stdio.h>
+
+#define N (4)
+
+char alphabet[N] = { '0', '1', '2', '3' };
+
+int permutation(int n, char result[N]);
+
+int main(void) {
+    char result[N];
+    int f;
+    scanf("%d", &f);
+    permutation(f, result);
+    printf("\n");
+    for (int i = 0; i < N; ++i)
+        printf("%c ", result[i]);
+    return 0;
+}
+
+
+int permutation(int n, char result[N]) {
+    int representation[4] = { 0 };
+    for (int i = 1; i < N + 1; ++i) {
+        representation[i - 1] = n % i;
+        n /= i;
+    }
+    for (int i = 0; i < N; ++i)
+        result[i] = alphabet[i];
+    
+    for (int i = N - 1; i > 0; --i) {
+        int j = representation[i];
+        char temp = result[j];
+        for (; j < i; ++j)
+            result[j] = result[j + 1];
+        result[i] = temp;
+    }
+    for (int i = 0; i < N / 2; ++i) {
+        char h = result[i];
+        result[i] = result[N - i - 1];
+        result[N - i - 1] = h;
+    }
+}
+
 ```
 ## 11. Выводы
 Была изучена конкретная система программирования на Си. Были получены навыки подготовки текстов и отладки программ.В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.
