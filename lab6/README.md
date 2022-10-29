@@ -65,18 +65,28 @@
 ## 8. Распечатка протокола 
 
 <b>main machine</b>
+
+
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/main-machine.png)
 
 <b>copy</b>
+
+
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/copy.png)
 
 <b>decrement</b>
+
+
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/decrement.png)
 
 <b>inc-left</b>
+
+
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/inc-left.png)
 
 <b>increment</b>
+
+
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/increment.png)
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
