@@ -66,16 +66,16 @@
 
 <b>main machine</b>
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/main-machine.png)
----
+
 <b>copy</b>
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/copy.png)
----
+
 <b>decrement</b>
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/decrement.png)
----
+
 <b>inc-left</b>
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/inc-left.png)
----
+
 <b>increment</b>
 ![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/increment.png)
 
