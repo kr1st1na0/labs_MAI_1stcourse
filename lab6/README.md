@@ -22,17 +22,15 @@
 ## 3. Задание (вариант № 15)
 Деление двух неотрицательных десятичных чисел.
 ## 4. Оборудование:
-<b>Процессор</b>: 1,6 GHz 2-ядерный Intel Core i5-8210Y
+<b>Процессор:</b> AMD Ryzen9-5900HS, 8 ядер
 
-<b>ОП</b>: 8 ГБ 2133 MHz LPDDR3
+<b>ОП:</b> 16gb
 
-<b>SSD</b>: 256 ГБ  
+<b>SSD:</b> 1 Tb SSD
 
-<b>Адрес</b>: 95.31.164.228 
+<b>Монитор:</b> 15.6" - 2560x1440
 
-<b>Монитор</b>: 13,3-дюймовый (2560 х 1600)
-
-<b>Графика</b>: Intel UHD Graphics 617 1536 МБ
+<b>Графика:</b> NV GeForce RTX 3080
 
 ## 5. Программное обеспечение:
 <b>Операционная система семейства:</b> VirtualBox 6.1.38 - Ubuntu 22.04.01 LTS
@@ -63,18 +61,23 @@
 
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
 Допущен к выполнению работы.  
-Подпись преподавателя _____________________
+<b>Подпись преподавателя:</b> ___________
 ## 8. Распечатка протокола 
 
-[main machine](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/main-machine.png)
+main machine
+![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/main-machine.png)
 
-[copy](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/copy.png)
+copy
+![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/copy.png)
 
-[decrement](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/decrement.png)
+decrement
+![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/decrement.png)
 
-[inc-left](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/inc-left.png)
+inc-left
+![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/inc-left.png)
 
-[increment](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/increment.png)
+increment
+![](https://github.com/mai-806-1st-year/fundamentals-of-computer-science-kr1st1na0/blob/5ddd62f0cda42922e0baa9d58553c160210636c0/lab6/increment.png)
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
 
@@ -82,14 +85,14 @@
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 08.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Деление двух неотрицательных десятичных чисел.
-```
--
-```
+
+Выполнение дополнительного задания.
+
 ## 11. Выводы
 Были изучены базовые команды для построения диаграммы Тьюринга. Был продуман и написан алгоритм для выполнения лабораторной работы. Были приобретены навыки, необходимые для дальнейшего обучения.
 
 Недочёты при выполнении задания могут быть устранены следующим образом: —
 
-</b>Подпись студента</b> _________________
+</b>Подпись студента:</b> _________________
 
 

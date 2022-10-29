@@ -96,13 +96,12 @@ int main() {
 
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
 Допущен к выполнению работы.  
-<b>Подпись преподавателя</b> ________________
+<b>Подпись преподавателя:</b> ________________
 ## 8. Распечатка протокола 
 ```
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ emacs lab9.c
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ cc lab9.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ ./a.out lab9.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ ./a.out lab9.c
+kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ ./a.out
 At the step number 10 the point was in the specified area.
 kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ exit
 ```
@@ -112,7 +111,7 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab8-9/lab9$ exit
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 22.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
-Написание программы на Си для ознакомления с синтаксисом языка:
+Вычисление перестановки по заданному алфавиту и её порядковому номеру.
 ```
 #include <stdio.h>
 
