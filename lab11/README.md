@@ -227,6 +227,8 @@ int number() {
     case FIRST_ASTERISK:
       if (ch == '*')
         state = SEPARATOR;
+      else if (ch == '/')
+        state = OUTSIDE;
       else if (ch != ' ' && ch != '\n')
         state = WORD;
         break;
