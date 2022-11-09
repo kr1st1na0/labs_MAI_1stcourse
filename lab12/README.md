@@ -144,8 +144,44 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab12$ exit
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+Выполнение дополнительного задания.
 ```
--
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DBL_LOG102 (3.010299956639811952E-1)
+#define INT_WIDTH (32)
+#define N ((int) (DBL_LOG102 * (INT_WIDTH - 1) + 1))
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    if (n > -100 && n < 100) {
+        printf("This number is not correct.\n");
+        exit(EXIT_FAILURE);
+    }
+    char mas[N + 1];
+    int len = snprintf(mas, N + 1, "%d", abs(n));
+    int max = -1;
+    for (int i = 0; i < len - 2; ++i) {
+        int sum = mas[i] - '0' + mas[i+1] - '0' + mas[i+2] - '0';
+        if (sum > max)
+            max = sum;
+    }
+    printf("Max sum: %d\n", max);
+    for (int i = 0; i < len - 2; ++i) {
+        int sum = mas[i] - '0' + mas[i+1] - '0' + mas[i+2] - '0';
+        if (sum == max)
+            printf("Numbers: %d %d %d\n", mas[i] - '0', mas[i+1] - '0', mas[i+2] - '0');
+    }
+
+    return 0;
+}
+
 ```
 ## 11. Выводы
 Была написана простейшая программа на языке на Си, выполняющая указанное вариантом действие над значениями в целом типе данных. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.

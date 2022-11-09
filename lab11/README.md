@@ -190,8 +190,99 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab11$ exit
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+Выполнение дополнительного задания.
 ```
--
+#include <stdio.h>
+
+typedef enum {
+  OUTSIDE,
+  FIRST_SOLIDUS,
+  FIRST_ASTERISK,
+  WORD,
+  SEPARATOR,
+  LAST_ASTERISK,
+  LAST_SOLIDUS,
+} State;
+
+int number();
+
+int main(void) {
+  printf("Number of words in a multiline comment: %d\n", number());
+  return 0;
+}
+
+int number() {
+  int result = 0;
+  State state = OUTSIDE;
+  for (char ch = getchar(); ch != EOF; ch = getchar()) {
+    switch (state) {
+      case OUTSIDE:
+      if (ch == '/')
+        state = FIRST_SOLIDUS;
+        break;
+    case FIRST_SOLIDUS:
+      if (ch == '*')
+        state = FIRST_ASTERISK;
+        break;
+    case FIRST_ASTERISK:
+      if (ch == '*')
+        state = SEPARATOR;
+      else if (ch != ' ' && ch != '\n')
+        state = WORD;
+        break;
+    case SEPARATOR:
+      if (ch == '/') {
+        state = OUTSIDE;
+        continue;
+      }
+      if (ch == '*') {
+        state = LAST_ASTERISK;
+        continue;
+      }
+      if (ch == ' ' || ch == '\n') {
+        ++result;
+        state = FIRST_ASTERISK;
+        continue;
+      }
+        else {
+          state =  WORD;
+          continue;
+            }
+      case WORD:
+        if (ch == '*')
+          state = LAST_ASTERISK;
+        else if (ch == ' ' || ch == '\n') {
+          ++result;
+          state = FIRST_ASTERISK;
+        }
+      case LAST_ASTERISK:
+        if (ch == '/') {
+          ++result;
+          state = OUTSIDE;
+          continue;
+        }
+        if (ch == '*') {
+          state = LAST_SOLIDUS;
+          continue;
+        }
+        else {
+          state = WORD;
+          continue;
+        }
+      case LAST_SOLIDUS:
+        if (ch != '/') {
+          continue;
+        }
+        else {
+          ++result;
+          state = OUTSIDE;
+          continue;
+        }
+      }
+    }
+  return result;
+}
+
 ```
 ## 11. Выводы
 Была написана простейшая программа на языке на Си, выполняющая анализ и обработку текста. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.
