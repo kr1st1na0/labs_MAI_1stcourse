@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5 (отлично)</ins>
 
-<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins>5 (отлично)</ins>
 
 <b>Подпись преподавателя:</b> ________________
 
@@ -148,43 +148,64 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab12$ exit
 ```
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define DBL_LOG102 (3.010299956639811952E-1)
-#define INT_WIDTH (32)
-#define N ((int) (DBL_LOG102 * (INT_WIDTH - 1) + 1))
+#define THREE (3)
 
-int max(int a, int b) {
-    return a > b ? a : b;
+typedef struct {
+    int array[THREE];
+    int idx;
+} CyclicArray;
+
+int sum(int array[THREE]) {
+    int s = 0;
+    for (int i = 0; i < THREE; i++) {
+        s += array[i];
+    }
+    return s;
 }
 
-int main() {
-    int n;
-    scanf("%d", &n);
-    if (n > -100 && n < 100) {
-        printf("This number is not correct.\n");
-        exit(EXIT_FAILURE);
-    }
-    char mas[N + 1];
-    int len = snprintf(mas, N + 1, "%d", abs(n));
-    int max = -1;
-    for (int i = 0; i < len - 2; ++i) {
-        int sum = mas[i] - '0' + mas[i+1] - '0' + mas[i+2] - '0';
-        if (sum > max)
-            max = sum;
-    }
-    printf("Max sum: %d\n", max);
-    for (int i = 0; i < len - 2; ++i) {
-        int sum = mas[i] - '0' + mas[i+1] - '0' + mas[i+2] - '0';
-        if (sum == max)
-            printf("Numbers: %d %d %d\n", mas[i] - '0', mas[i+1] - '0', mas[i+2] - '0');
-    }
+void func(int maxArray[THREE]);
 
+int main() {
+    int maxArray[THREE] = { 0, 0, 0 };
+    func(maxArray);
+    printf("MaxSum = %d\n", sum(maxArray));
+    printf("Numbers: ");
+    for (int i = 0; i < THREE; i++) {
+        printf("%d ", maxArray[i]);
+    }
+    printf("\n");
     return 0;
+}
+
+int update(CyclicArray *cyclic, int digit) {
+    int result = cyclic->array[cyclic->idx];
+    cyclic->array[cyclic->idx++] = digit;
+    cyclic->idx %= THREE;
+    return result;
+}
+
+void func(int maxArray[THREE]) {
+    int iter = 0;
+    memset(maxArray, 0, THREE * sizeof maxArray[0]);
+    int currentSum = 0, maxSum = 0;
+    CyclicArray  cyclic = { { 0, 0, 0}, 0 };
+    for (int ch = getchar(); ch != EOF; ch = getchar(), ++iter) {
+        int digit = ch - '0';
+        currentSum -= update(&cyclic, digit);
+        currentSum += digit;
+        if (currentSum > maxSum) {
+            memcpy(maxArray, cyclic.array, sizeof cyclic.array);
+            maxSum = currentSum;
+        }
+    }
 }
 
 ```
 ## 11. Выводы
-Была написана простейшая программа на языке на Си, выполняющая указанное вариантом действие над значениями в целом типе данных. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.
+
+Была написана программа на языке на Си, выполняющая указанное вариантом действие над значениями в целом типе данных. В результате выполнения работы, были приобретены навыки для работы с числами в целом типе данных.
 
 Недочёты при выполнении задания могут быть устранены следующим образом: —
 

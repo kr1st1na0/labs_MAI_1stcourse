@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5 (отлично)</ins>
 
-<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins>5 (отлично)</ins>
 
 <b>Подпись преподавателя:</b> ________________
 
@@ -223,7 +223,55 @@ kristina@kristina-VirtualBox:~/Рабочий стол/lab10$ exit
 | 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
 ```
--
+kristina@kristina-VirtualBox:~/Рабочий стол/lab10$ cc -g lab10.c
+kristina@kristina-VirtualBox:~/Рабочий стол/lab10$ gdb a.out
+GNU gdb (Ubuntu 12.0.90-0ubuntu1) 12.0.90
+Copyright (C) 2022 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) list
+1    #include <stdio.h>
+2    
+3    int main () {
+4        int n, a, summ = 0;
+5        scanf("%d\n", &n);
+6        for (int i = 0; i < n; i++) {
+7            scanf("%d", &a);
+8            summ += a;
+9        }
+10        printf("%d\n", summ);
+(gdb) break lab10.c:7 if i == 3
+Breakpoint 1 at 0x11cf: file lab10.c, line 7.
+(gdb) run
+Starting program: /home/kristina/Рабочий стол/lab10/a.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+7
+3
+4
+2
+
+Breakpoint 1, main () at lab10.c:7
+7            scanf("%d", &a);
+(gdb) Quit
+(gdb) quit
+A debugging session is active.
+
+    Inferior 1 [process 20617] will be killed.
+
+Quit anyway? (y or n) y
 ```
 ## 11. Выводы
 Была написана и отлажена простейшая программа на языке на Си. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ.
