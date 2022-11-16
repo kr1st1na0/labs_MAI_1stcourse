@@ -27,7 +27,7 @@ $i_{k+1} = \frac{|i_k - j_k + l_k|}{3 - sign(i_k - j_k + k)} + 10$
 
 $j_{k+1} = \frac{|i_k + j_k - l_k|}{3 - sign(i_k - j_k + k)} + 10$
 
-$l_{k+1} = max(i_kj_k, j_kl_k)(k + 1)$ mod 40
+$l_{k+1} = max(i_kj_k, j_kl_k)(k + 1)$ $mod$ $40$
 ## 4. Оборудование:
 <b>Процессор:</b> AMD Ryzen9-5900HS, 8 ядер
 
