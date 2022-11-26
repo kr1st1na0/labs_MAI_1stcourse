@@ -1,4 +1,4 @@
-# Отчёт по лабораторной работе №14 по курсу "Фундаментальная информатика"
+# Отчёт по лабораторной работе №15 по курсу "Фундаментальная информатика"
 
 <b>Студент группы:</b> <ins>М80-108Б-22 Былькова Кристина Алексеевна, № по списку 2</ins> 
 
@@ -15,11 +15,11 @@
 <b>Подпись преподавателя:</b> ________________
 
 ## 1. Тема
-Вложенные циклы с параметрами. Обход и линеаризация матриц.
+Обработка матриц
 ## 2. Цель работы
-Составить программу ввода квадратной матрицы и печати в строку всех её элементов в заданном ниже порядке следования (обхода) с помощью вложенных циклов с переменными границами.
+Составить программу на языке Си, производящую обработку квадратной матрицы порядка NxN (1 <= N <= 8), из целых чисел, вводимой из стандартного входного текстового файла.
 ## 3. Задание (вариант № 2)
-Печать элементов матрицы по диагоналям, параллельным главной, с правого верхнего угла в левый нижний.
+Замена всех максимальных элементов матрицы на чисто столбцов, содержащих её минимальный элемент.
 ## 4. Оборудование:
 <b>Процессор:</b> AMD Ryzen9-5900HS, 8 ядер
 
@@ -49,127 +49,63 @@
 ## 6. Идея, метод, алгоритм решения задачи (в формах: словесной, псевдокода, графической [блок-схема, диаграмма, рисунок, таблица] или формальные спецификации с пред- и постусловиями)
 1. Ввод размера матрицы; 
 2. Создание матрицы;
-3. Циклы для прохода по матрице;
+3. Написание функций, необходимых для выполнения задачи;
 4. Вывод ответа.
 
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию]. 
 ```
 #include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
 #include <stdlib.h>
 
-#define MAX_N (7)
+#define MAX_N (8)
 
-void diag(int d, int n, int (*matrix)[n]);
-
-int main() {
-  int n;
-  printf("Matrix size: ");
-  scanf("%d", &n);
-  int matrix[MAX_N * MAX_N];
-  int i, j, k;
-  printf("Matrix:\n");
-  for (i = 0; i < n; i++) {
-    for (j = 0; j < n; j++) {
-      scanf("%d", &matrix[i * n + j]);
+int max(int matrix[], int n) {
+  int max_elem = -1e9;
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++) {
+      if (matrix[i * n + j] > max_elem)
+        max_elem = matrix[i * n + j];
     }
   }
-  int d;
-  printf("Diag number: ");
-  scanf("%d", &d);
-  printf("Out: ");
-  diag(d, n, (int (*)[n]) matrix);
-  printf("\n");
-  return 0;
+  return max_elem;
 }
 
-void diag(int d, int n, int (*matrix)[n]) {
-  int i, j, k;
-  int t = 1;
-  for (i = n - 1; i >= 0; i--) {
-    if (t == d) printf("\ndiag №%d: ", t);
-    for (j = i, k = 0; j < n; j++, k++) {
-        if (t == d) printf("%d ", matrix[k][j]);
+int min(int matrix[], int n) {
+  int min_elem = 1e9;
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++) {
+      if (matrix[i * n + j] < min_elem)
+        min_elem = matrix[i * n + j];
     }
-    ++t;
   }
-  for (i = 1; i < n; i++) {
-    if (t == d) printf("\ndiag №%d: ", t);
-    for (j = 0, k = i; k < n; j++, k++) {
-      if (t == d) printf("%d ", matrix[k][j]);
-    }
-    ++t;
-  }
+  return min_elem;
 }
-```
 
-Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
-Допущен к выполнению работы.  
-<b>Подпись преподавателя:</b> ________________
-## 8. Распечатка протокола 
-```
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ cc -g lab14.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 3
-Matrix:
-1 6 1 
-2 7 5 
-7 6 7 
-Diag number: 1
-Out: 
-diag №1: 1 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 3
-Matrix:
-6 8 6 
-6 4 9 
-0 0 1 
-Diag number: 2
-Out: 
-diag №2: 8 9 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 4
-Matrix:
-6 0 5 6 
-1 8 8 9 
-3 4 8 1 
-0 8 8 4 
-Diag number: 3
-Out: 
-diag №3: 0 8 1 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 7
-Matrix:
-9 5 6 9 0 1 3 
-1 9 8 5 4 8 4 
-0 7 8 3 0 7 6 
-6 5 6 5 5 5 5 
-6 0 2 7 5 0 8 
-7 1 3 9 3 1 6 
-9 1 2 1 1 0 5 
-Diag number: 8
-Out: 
-diag №8: 1 7 6 7 3 0 
-```
-## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
+int columns_count(int matrix[], int n, int min_elem) {
+  int count = 0;
+  for (int j = 0; j < n; j++){
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+      if (matrix[i * n + j] == min_elem)
+        ++k;
+      //printf("%d ", matrix[i * n + j]);
+    }
+  //printf("\n");
+  if (k > 0)
+    ++count;
+  }
+  return count;
+}
 
-| № |  Лаб. или дом. | Дата | Время | Событие | Действие по исправлению | Примечание |
-| ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
-## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
-Печать элементов матрицы по спиралям.
-```
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdlib.h>
-
-#define MAX_N (7)
-
-void spiral(int number, int n, int (*matrix)[n]);
+int replace(int matrix[], int n, int max_elem, int count) {
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++) {
+      if (matrix[i * n + j] == max_elem)
+        matrix[i * n + j] = count;
+    }
+  }
+  return *matrix;
+}
 
 int main() {
   int n;
@@ -182,40 +118,95 @@ int main() {
       scanf("%d", &matrix[i * n + j]);
     }
   }
-  int number = 1;
-  printf("Out: ");
-  spiral(number, n, (int (*)[n]) matrix);
+  //max
+  int max_elem = max(matrix, n);
+  printf("Max elem: %d", max_elem);
   printf("\n");
-  return 0;
-}
-
-void spiral(int number, int n, int (*matrix)[n]) {
-  int l = n;
-  int p = 0;
-  int i = 0, j = -1;
-  int temp[4] = { 1, 0, -1, 0 };
-  printf("\nspiral №%d - ", number);
-  ++number;
-  while (l != 0) {
-    if (i == j && (i != n - 1 && j != n - 1)) {
-      ++number;
+  //min
+  int min_elem = min(matrix, n);
+  printf("Min elem: %d", min_elem);
+  printf("\n");
+  //count
+  int count = columns_count(matrix, n, min_elem);
+  printf("Number of columns with min_elem: %d", count);
+  printf("\n");
+  //replace
+  replace(matrix, n, max_elem, count);
+  //output
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++) {
+      printf("%d ", matrix[i * n + j]);
     }
-    for (int k = 0; k != l; ++k) {
-        j += temp[p % 4];
-        i += temp[(p + 3) % 4];
-        printf("%d ", matrix[i][j]);
-    }
-    ++p;
-    l -= p % 2;
-    if (i - j == 1) {
-      printf("\nspiral №%d - ", number);
-    }
+    printf("\n");
   }
 }
 ```
+
+Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
+Допущен к выполнению работы.  
+<b>Подпись преподавателя:</b> ________________
+## 8. Распечатка протокола 
+```
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ cc -g lab15.c
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
+Matrix size: 8
+Matrix:
+2 4 3 9 3 0 8 4 
+4 4 8 8 0 1 6 4 
+2 2 7 9 6 2 4 1 
+5 0 4 9 4 6 1 9 
+0 4 8 5 7 8 0 1 
+2 0 1 2 3 9 8 7 
+4 5 6 0 9 1 3 5 
+3 8 6 7 6 7 8 8 
+Max elem: 9
+Min elem: 0
+Number of columns with min_elem: 6
+2 4 3 6 3 0 8 4 
+4 4 8 8 0 1 6 4 
+2 2 7 6 6 2 4 1 
+5 0 4 6 4 6 1 6 
+0 4 8 5 7 8 0 1 
+2 0 1 2 3 6 8 7 
+4 5 6 0 6 1 3 5 
+3 8 6 7 6 7 8 8 
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
+Matrix size: 4
+Matrix:
+3 3 5 0 
+4 9 9 3 
+6 9 8 3 
+0 9 6 6 
+Max elem: 9
+Min elem: 0
+Number of columns with min_elem: 2
+3 3 5 0 
+4 2 2 3 
+6 2 8 3 
+0 2 6 6 
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
+Matrix size: 2
+Matrix:
+1 3 
+5 3 
+Max elem: 5
+Min elem: 1
+Number of columns with min_elem: 1
+1 3 
+1 3
+```
+## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
+
+| № |  Лаб. или дом. | Дата | Время | Событие | Действие по исправлению | Примечание |
+| ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
+## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+```
+-
+```
 ## 11. Выводы
 
-Была написана программа на языке на Си, выполняющая указанное вариантом действие над квадратной матрицей. В результате выполнения работы, были приобретены навыки для работы с квадратными матрицами и печати в строку всех их элементов.
+Была написана программа на языке на Си, выполняющая указанное вариантом действие над квадратной матрицей. В результате выполнения работы, были приобретены навыки для работы с квадратными матрицами и обработки их элементов.
 
 Недочёты при выполнении задания могут быть устранены следующим образом: —
 

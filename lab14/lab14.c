@@ -3,38 +3,47 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stddef.h>
-#include <time.h>
 
 #define MAX_N (7)
 
+void diag(int d, int n, int (*matrix)[n]);
+
 int main() {
-  srand(time(0));
   int n;
   printf("Matrix size: ");
   scanf("%d", &n);
-  int matrix[MAX_N][MAX_N];
+  int matrix[MAX_N * MAX_N];
   int i, j, k;
   printf("Matrix:\n");
-  for (i = 0; i < n; i++){
+  for (i = 0; i < n; i++) {
     for (j = 0; j < n; j++) {
-      //scanf("%d", &matrix[i][j]);
-      matrix[i][j] = rand() % 10;
-      printf("%d ", matrix[i][j]);
+      scanf("%d", &matrix[i * n + j]);
     }
-    printf("\n");
-}
+  }
+  int d;
+  printf("Diag number: ");
+  scanf("%d", &d);
   printf("Out: ");
-  for (i = n - 1; i >= 0; i-- ) {
+  diag(d, n, (int (*)[n]) matrix);
+  printf("\n");
+  return 0;
+}
+
+void diag(int d, int n, int (*matrix)[n]) {
+  int i, j, k;
+  int t = 1;
+  for (i = n - 1; i >= 0; i--) {
+    if (t == d) printf("\ndiag №%d: ", t);
     for (j = i, k = 0; j < n; j++, k++) {
-      printf("%d ", matrix[k][j]);
+        if (t == d) printf("%d ", matrix[k][j]);
     }
+    ++t;
   }
   for (i = 1; i < n; i++) {
+    if (t == d) printf("\ndiag №%d: ", t);
     for (j = 0, k = i; k < n; j++, k++) {
-      printf("%d ", matrix[k][j]);
+      if (t == d) printf("%d ", matrix[k][j]);
     }
+    ++t;
   }
-    printf("\n");
-    return 0;
 }
