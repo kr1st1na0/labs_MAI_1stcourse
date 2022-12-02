@@ -10,21 +10,17 @@ void diag(int d, int n, int (*matrix)[n]);
 
 int main() {
   int n;
-  printf("Matrix size: ");
   scanf("%d", &n);
   int matrix[MAX_N * MAX_N];
   int i, j, k;
-  printf("Matrix:\n");
   for (i = 0; i < n; i++) {
     for (j = 0; j < n; j++) {
       scanf("%d", &matrix[i * n + j]);
     }
   }
-  int d;
-  printf("Diag number: ");
-  scanf("%d", &d);
-  printf("Out: ");
-  diag(d, n, (int (*)[n]) matrix);
+  for (int d = 1; d < n*2; d++) {
+    diag(d, n, (int (*)[n]) matrix);
+  }
   printf("\n");
   return 0;
 }
@@ -33,14 +29,12 @@ void diag(int d, int n, int (*matrix)[n]) {
   int i, j, k;
   int t = 1;
   for (i = n - 1; i >= 0; i--) {
-    if (t == d) printf("\ndiag №%d: ", t);
     for (j = i, k = 0; j < n; j++, k++) {
         if (t == d) printf("%d ", matrix[k][j]);
     }
     ++t;
   }
   for (i = 1; i < n; i++) {
-    if (t == d) printf("\ndiag №%d: ", t);
     for (j = 0, k = i; k < n; j++, k++) {
       if (t == d) printf("%d ", matrix[k][j]);
     }

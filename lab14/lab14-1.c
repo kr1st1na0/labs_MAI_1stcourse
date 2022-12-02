@@ -10,17 +10,14 @@ void spiral(int number, int n, int (*matrix)[n]);
 
 int main() {
   int n;
-  printf("Matrix size: ");
   scanf("%d", &n);
   int matrix[MAX_N * MAX_N];
-  printf("Matrix:\n");
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
       scanf("%d", &matrix[i * n + j]);
     }
   }
   int number = 1;
-  printf("Out: ");
   spiral(number, n, (int (*)[n]) matrix);
   printf("\n");
   return 0;
@@ -31,7 +28,6 @@ void spiral(int number, int n, int (*matrix)[n]) {
   int p = 0;
   int i = 0, j = -1;
   int temp[4] = { 1, 0, -1, 0 };
-  printf("\nspiral №%d - ", number);
   ++number;
   while (l != 0) {
     if (i == j && (i != n - 1 && j != n - 1)) {
@@ -44,8 +40,5 @@ void spiral(int number, int n, int (*matrix)[n]) {
     }
     ++p;
     l -= p % 2;
-    if (i - j == 1) {
-      printf("\nspiral №%d - ", number);
-    }
   }
 }

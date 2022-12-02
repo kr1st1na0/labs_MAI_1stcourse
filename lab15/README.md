@@ -4,13 +4,13 @@
 
 <b>Контакты e-mail:</b> <ins>kristina.bilckova@yandex.ru</ins>
 
-<b>Работа выполнена:</b> «29» <ins>октября</ins> <ins>2022</ins> г.
+<b>Работа выполнена:</b> «3» <ins>декабря</ins> <ins>2022</ins> г.
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
 <b>Входной контроль знаний с оценкой:</b> <ins> </ins>
 
-<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «3» <ins>декабря</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
 
 <b>Подпись преподавателя:</b> ________________
 
@@ -56,55 +56,53 @@
 ```
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define MAX_N (8)
 
-int max(int matrix[], int n) {
-  int max_elem = -1e9;
+int max(int n, int (*matrix)[n]) {
+  int max_elem = INT_MIN;
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
-      if (matrix[i * n + j] > max_elem)
-        max_elem = matrix[i * n + j];
+      if (matrix[i][j] > max_elem)
+        max_elem = matrix[i][j];
     }
   }
   return max_elem;
 }
 
-int min(int matrix[], int n) {
-  int min_elem = 1e9;
+int min(int n, int (*matrix)[n]) {
+  int min_elem = INT_MAX;
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
-      if (matrix[i * n + j] < min_elem)
-        min_elem = matrix[i * n + j];
+      if (matrix[i][j] < min_elem)
+        min_elem = matrix[i][j];
     }
   }
   return min_elem;
 }
 
-int columns_count(int matrix[], int n, int min_elem) {
+int columns_count(int n, int (*matrix)[n], int min_elem) {
   int count = 0;
   for (int j = 0; j < n; j++){
     int k = 0;
     for (int i = 0; i < n; i++) {
-      if (matrix[i * n + j] == min_elem)
+      if (matrix[i][j] == min_elem)
         ++k;
-      //printf("%d ", matrix[i * n + j]);
     }
-  //printf("\n");
   if (k > 0)
     ++count;
   }
   return count;
 }
 
-int replace(int matrix[], int n, int max_elem, int count) {
+void replace(int n, int (*matrix)[n], int max_elem, int count) {
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
-      if (matrix[i * n + j] == max_elem)
-        matrix[i * n + j] = count;
+      if (matrix[i][j] == max_elem)
+        matrix[i][j] = count;
     }
   }
-  return *matrix;
 }
 
 int main() {
@@ -119,19 +117,19 @@ int main() {
     }
   }
   //max
-  int max_elem = max(matrix, n);
+  int max_elem = max(n, (int (*)[n]) matrix);
   printf("Max elem: %d", max_elem);
   printf("\n");
   //min
-  int min_elem = min(matrix, n);
+  int min_elem = min(n, (int (*)[n]) matrix);
   printf("Min elem: %d", min_elem);
   printf("\n");
   //count
-  int count = columns_count(matrix, n, min_elem);
+  int count = columns_count(n, (int (*)[n]) matrix, min_elem);
   printf("Number of columns with min_elem: %d", count);
   printf("\n");
   //replace
-  replace(matrix, n, max_elem, count);
+  replace(n, (int (*)[n]) matrix, max_elem, count);
   //output
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
@@ -147,53 +145,34 @@ int main() {
 <b>Подпись преподавателя:</b> ________________
 ## 8. Распечатка протокола 
 ```
-kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ cc -g lab15.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
-Matrix size: 8
-Matrix:
-2 4 3 9 3 0 8 4 
-4 4 8 8 0 1 6 4 
-2 2 7 9 6 2 4 1 
-5 0 4 9 4 6 1 9 
-0 4 8 5 7 8 0 1 
-2 0 1 2 3 9 8 7 
-4 5 6 0 9 1 3 5 
-3 8 6 7 6 7 8 8 
-Max elem: 9
-Min elem: 0
-Number of columns with min_elem: 6
-2 4 3 6 3 0 8 4 
-4 4 8 8 0 1 6 4 
-2 2 7 6 6 2 4 1 
-5 0 4 6 4 6 1 6 
-0 4 8 5 7 8 0 1 
-2 0 1 2 3 6 8 7 
-4 5 6 0 6 1 3 5 
-3 8 6 7 6 7 8 8 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
-Matrix size: 4
-Matrix:
-3 3 5 0 
-4 9 9 3 
-6 9 8 3 
-0 9 6 6 
-Max elem: 9
-Min elem: 0
-Number of columns with min_elem: 2
-3 3 5 0 
-4 2 2 3 
-6 2 8 3 
-0 2 6 6 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ ./a.out
-Matrix size: 2
-Matrix:
-1 3 
-5 3 
-Max elem: 5
-Min elem: 1
-Number of columns with min_elem: 1
-1 3 
-1 3
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ cc -g lab15.c && ./a.out
+4
+1 2 3 49
+0 50 1 2
+5 6 7 8
+9 10 11 12
+
+1 2 3 49 
+0 1 1 2 
+5 6 7 8 
+9 10 11 12
+kristina@kristina-VirtualBox:~/Рабочий стол/lab15$ cc -g lab15.c && ./a.out
+7
+1 2 3 4 5 6 49
+-3 9 10 11 12 13 14
+15 16 -3 18 19 20 21 
+22 23 24 25 26 -3 28
+29 30 49 -3 33 34 35
+36 37 38 -3 40 41 42
+49 44 45 -3 47 48 49
+
+1 2 3 4 5 6 4 
+-3 9 10 11 12 13 14 
+15 16 -3 18 19 20 21 
+22 23 24 25 26 -3 28 
+29 30 4 -3 33 34 35 
+36 37 38 -3 40 41 42 
+4 44 45 -3 47 48 4 
 ```
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
 
@@ -201,6 +180,7 @@ Number of columns with min_elem: 1
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
+Приведение матрицы к ступенчатому виду.
 ```
 -
 ```

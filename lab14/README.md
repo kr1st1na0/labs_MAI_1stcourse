@@ -4,13 +4,13 @@
 
 <b>Контакты e-mail:</b> <ins>kristina.bilckova@yandex.ru</ins>
 
-<b>Работа выполнена:</b> «29» <ins>октября</ins> <ins>2022</ins> г.
+<b>Работа выполнена:</b> «26» <ins>ноября</ins> <ins>2022</ins> г.
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5 (отлично)</ins>
 
-<b>Отчет сдан</b> «29» <ins>октября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «26» <ins>ноября</ins> <ins>2022</ins> г., <b>итоговая оценка</b> <ins>5 (отлично)</ins>
 
 <b>Подпись преподавателя:</b> ________________
 
@@ -66,21 +66,17 @@ void diag(int d, int n, int (*matrix)[n]);
 
 int main() {
   int n;
-  printf("Matrix size: ");
   scanf("%d", &n);
   int matrix[MAX_N * MAX_N];
   int i, j, k;
-  printf("Matrix:\n");
   for (i = 0; i < n; i++) {
     for (j = 0; j < n; j++) {
       scanf("%d", &matrix[i * n + j]);
     }
   }
-  int d;
-  printf("Diag number: ");
-  scanf("%d", &d);
-  printf("Out: ");
-  diag(d, n, (int (*)[n]) matrix);
+  for (int d = 1; d < n*2; d++) {
+    diag(d, n, (int (*)[n]) matrix);
+  }
   printf("\n");
   return 0;
 }
@@ -89,14 +85,12 @@ void diag(int d, int n, int (*matrix)[n]) {
   int i, j, k;
   int t = 1;
   for (i = n - 1; i >= 0; i--) {
-    if (t == d) printf("\ndiag №%d: ", t);
     for (j = i, k = 0; j < n; j++, k++) {
         if (t == d) printf("%d ", matrix[k][j]);
     }
     ++t;
   }
   for (i = 1; i < n; i++) {
-    if (t == d) printf("\ndiag №%d: ", t);
     for (j = 0, k = i; k < n; j++, k++) {
       if (t == d) printf("%d ", matrix[k][j]);
     }
@@ -110,54 +104,34 @@ void diag(int d, int n, int (*matrix)[n]) {
 <b>Подпись преподавателя:</b> ________________
 ## 8. Распечатка протокола 
 ```
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ cc -g lab14.c
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 3
-Matrix:
-1 6 1 
-2 7 5 
-7 6 7 
-Diag number: 1
-Out: 
-diag №1: 1 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 3
-Matrix:
-6 8 6 
-6 4 9 
-0 0 1 
-Diag number: 2
-Out: 
-diag №2: 8 9 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 4
-Matrix:
-6 0 5 6 
-1 8 8 9 
-3 4 8 1 
-0 8 8 4 
-Diag number: 3
-Out: 
-diag №3: 0 8 1 
-kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ ./a.out
-Matrix size: 7
-Matrix:
-9 5 6 9 0 1 3 
-1 9 8 5 4 8 4 
-0 7 8 3 0 7 6 
-6 5 6 5 5 5 5 
-6 0 2 7 5 0 8 
-7 1 3 9 3 1 6 
-9 1 2 1 1 0 5 
-Diag number: 8
-Out: 
-diag №8: 1 7 6 7 3 0 
+kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ cc -g lab14.c && ./a.out
+7
+1 2 3 4 5 6 7
+8 9 10 11 12 13 14
+15 16 17 18 19 20 21 
+22 23 24 25 26 27 28
+29 30 31 32 33 34 35
+36 37 38 39 40 41 42
+43 44 45 46 47 48 49
+7 6 14 5 13 21 4 12 20 28 3 11 19 27 35 2 10 18 26 34 42 1 9 17 25 33 41 49 8 16 24 32 40 48 15 23 31 39 47 22 30 38 46 29 37 45 36 44 43 
+kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ cc -g lab14.c && ./a.out
+4
+1 2 3 4
+5 6 7 8
+9 10 11 12
+13 14 15 16
+4 3 8 2 7 12 1 6 11 16 5 10 15 9 14 13 
+kristina@kristina-VirtualBox:~/Рабочий стол/lab14$ cc -g lab14.c && ./a.out
+2
+1 2
+3 4
+2 1 4 3 
 ```
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
 
 | № |  Лаб. или дом. | Дата | Время | Событие | Действие по исправлению | Примечание |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| 1 | дом. | 29.10.22 | 13:00 | Выполнение лабораторной работы | - | - |
+| 1 | дом. | 26.11.22 | 13:00 | Выполнение лабораторной работы | - | - |
 ## 10. Замечания автора по существу работы — Написание команд для отработки навыков работы в ОС UNIX.
 Печать элементов матрицы по спиралям.
 ```
@@ -173,17 +147,14 @@ void spiral(int number, int n, int (*matrix)[n]);
 
 int main() {
   int n;
-  printf("Matrix size: ");
   scanf("%d", &n);
   int matrix[MAX_N * MAX_N];
-  printf("Matrix:\n");
   for (int i = 0; i < n; i++){
     for (int j = 0; j < n; j++) {
       scanf("%d", &matrix[i * n + j]);
     }
   }
   int number = 1;
-  printf("Out: ");
   spiral(number, n, (int (*)[n]) matrix);
   printf("\n");
   return 0;
@@ -194,7 +165,6 @@ void spiral(int number, int n, int (*matrix)[n]) {
   int p = 0;
   int i = 0, j = -1;
   int temp[4] = { 1, 0, -1, 0 };
-  printf("\nspiral №%d - ", number);
   ++number;
   while (l != 0) {
     if (i == j && (i != n - 1 && j != n - 1)) {
@@ -207,9 +177,6 @@ void spiral(int number, int n, int (*matrix)[n]) {
     }
     ++p;
     l -= p % 2;
-    if (i - j == 1) {
-      printf("\nspiral №%d - ", number);
-    }
   }
 }
 ```
