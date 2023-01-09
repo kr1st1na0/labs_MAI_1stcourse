@@ -8,9 +8,9 @@ typedef long double ldbl;
 
 const ldbl k = 10e2;
 
-ldbl epsilon(ldbl x) {
+dbl epsilon() {
     ldbl eps = 1.0;
-    while (x + eps / 2.0 != x)
+    while (1 + eps / 2.0 != 1)
         eps /= 2.0;
     return eps;
 }
@@ -29,27 +29,28 @@ ldbl Taylor(dbl x, int n) {
 }
 
 int main() {
+    dbl abs_eps = epsilon();
+    dbl relative_eps = sqrt(abs_eps);
     ldbl a = 0.0, b = 0.5, x = 0.0, result;
     int n, t;
     printf("Enter the number of iterations: ");
     scanf("%d", &n);
-    printf("\n");
+    printf("Machine epsilon for long double = %.16e\n", abs_eps);
     ldbl step = (b - a) / n;
     printf("Taylor series value table for function f(x) = ln((1+x)/(1-x))\n");
-    printf(" _______________________________________________________________________________________________ \n");
-    printf("|     Machine epsilon    |    x    |       sum of row       |         function       |   iter   |\n");
-    printf("|________________________|_________|________________________|________________________|__________|\n");
+    printf(" ________________________________________________________________________ \n");
+    printf("|    x    |       sum of row       |         function       |   iter    |\n");
+    printf("|_________|________________________|________________________|___________|\n");
     for (ldbl x = a; x <= b; x += step) {
-      ldbl eps = epsilon(x);
       for (n = 0; n < MAX_ITER; n++) {
         result = Taylor(x, n);
-        if (fabs(result) < eps * k) {
+        if (fabs(result) <= fmax(relative_eps * fabs(result), abs_eps)) {
           break;
         }
       }
-      printf("| %.20Lf | %.5Lf | %.20Lf | %.20Lf |   %d\t|\n", eps, x, result, function(x), n);
+      printf("| %.5Lf | %.20Lf | %.20Lf |   %d\t|\n", x, result, function(x), n);
       result = 0.0;
     }
-    printf("|________________________|_________|________________________|________________________|__________|\n");
+    printf("|_________|________________________|________________________|___________|\n");
     return 0;
 }
