@@ -50,7 +50,7 @@ dbl F3_second_derivative(dbl x) {
     return 1/((1 + x) * (1 + x)) - sin(x);
 }
 
-void dichotomy(dbl F(dbl), dbl a, dbl b) {
+dbl dichotomy(dbl F(dbl), dbl a, dbl b) {
     dbl x = (a + b) / 2;
     dbl eps = epsilon(x);
     if (F(a) * F(b) < 0){
@@ -63,52 +63,64 @@ void dichotomy(dbl F(dbl), dbl a, dbl b) {
                 a = x;
             }
         }
-        printf("The root obtained by the dichotomy method: %.10f\n", x);
+        return x;
     }
     else {
-        printf("The dechotomy method isn't suitable\n");
+        return NAN;
     }
 }
 
-void iterations(dbl F_x(dbl), dbl F_x_first_derivative(dbl), dbl a, dbl b) {
+dbl iterations(dbl F_x(dbl), dbl F_x_first_derivative(dbl), dbl a, dbl b) {
     dbl x = (a + b) / 2;
     dbl eps = epsilon(x);
     if (fabs(F_x_first_derivative(x)) < 1) {
         while (fabs(F_x(x) - x) >= eps) {
             x = F_x(x);
         }
-        printf("The root obtained by the iterations method: %.10f\n", x);
+        return x;
     }
     else {
-        printf("The iterations method isn't suitable\n");
+        return NAN;
     }
 }
 
-void newton(dbl F(dbl), dbl F_first_derivative(dbl), dbl F_second_derivative(dbl), dbl a, dbl b) {
+dbl newton(dbl F(dbl), dbl F_first_derivative(dbl), dbl F_second_derivative(dbl), dbl a, dbl b) {
     dbl x = (a + b / 2);
     dbl eps = epsilon(x);
     if (fabs(F(x) * F_second_derivative(x)) < (F_first_derivative(x) * F_first_derivative(x))) {
         while (fabs(F(x) / F_first_derivative(x)) > eps) {
             x -= F(x) / F_first_derivative(x);
         }
-        printf("The root obtained by the Newton's method: %.10f\n", x);
+        return x;
     }
     else {
-        printf("The Newton's method isn't suitable\n");
+        return NAN;
     }
 }
+
+void result(dbl d, dbl i, dbl n) {
+   if (d != NAN) printf("The root obtained by the dichotomy method: %.10f\n", d);
+   else printf("The dechotomy method isn't suitable\n");
+   if (i != NAN) printf("The root obtained by the iterations method: %.10f\n", i);
+   else printf("The iterations method isn't suitable\n");
+   if (n != NAN) printf("The root obtained by the Newton's method: %.10f\n", n);
+   else printf("The Newton's method isn't suitable\n");
+}
+
 
 int main() {
     dbl a2 = 1, b2 = 2;
     dbl a3 = 1, b3 = 1.5;
+    dbl d1 = dichotomy(F2, a2, b2);
+    dbl i1 = iterations(F2_x, F2_x_first_derivative, a2, b2);
+    dbl n1 = newton(F2, F2_first_derivative, F2_second_derivative, a2, b2);
     printf("Function cos(x) - exp(-0.5*x^2) + x - 1\n");
-    dichotomy(F2, a2, b2);
-    iterations(F2_x, F2_x_first_derivative, a2, b2);
-    newton(F2, F2_first_derivative, F2_second_derivative, a2, b2);
+    result(d1, i1, n1);
     printf("\n");
+    dbl d2 = dichotomy(F3, a3, b3);
+    dbl i2 = iterations(F3_x, F3_x_first_derivative, a3, b3);
+    dbl n2 =newton(F3, F3_first_derivative, F3_second_derivative, a3, b3);
     printf("Function 1 - x + sin(x) - ln(1 + x)\n");
-    dichotomy(F3, a3, b3);
-    iterations(F3_x, F3_x_first_derivative, a3, b3);
-    newton(F3, F3_first_derivative, F3_second_derivative, a3, b3);
+    result(d2, i2, n2);
     return 0;
 }
