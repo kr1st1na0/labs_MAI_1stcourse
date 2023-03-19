@@ -619,7 +619,9 @@ drwxrwxrwt  2 root     root     4096 мар  9 22:14 .XIM-unix
 ## 10. Замечания автора по существу работы
 
 <b>Защита</b>
-
+ 
+ <b>div2</b>
+ 
 - [Задача во время контеста](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427386/submission/193848037)
 - [Дорешка](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427386/submission/197005255)
 
