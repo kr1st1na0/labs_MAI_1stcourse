@@ -203,7 +203,7 @@ int main() {
 
 ## 10. Замечания автора по существу работы
 
-<b>div2</b>
+<b>Защита: div2</b>
 
 - [Задача во время контеста](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427390/submission/197654796)
 - [Задача во время контеста](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427390/submission/197658205)
