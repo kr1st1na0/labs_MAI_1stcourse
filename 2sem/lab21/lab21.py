@@ -24,7 +24,7 @@ for (root, dirs, files) in os.walk(directory):
     for file in files:
         in_name = join(root, file)
         cur_size = getsize(in_name)
-        if file.endswith(suffix) and cur_size <= size:
+        if file.endswith(suffix) and cur_size < size:
             with open(in_name, "r") as input:
                 with open("ans", "a") as output:
                     for line in input:

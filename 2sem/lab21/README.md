@@ -98,7 +98,7 @@ echo -n > /home/kristina/lab21/answer
 for i in $(find ./ -name \*."$suffix" -type f -print)
 do
   file_size=$(stat -c %s "$i")
-  if [ "$file_size" -le "$size" ]; then
+  if [ "$file_size" -lt "$size" ]; then
     cat "$i"  >> /home/kristina/lab21/answer
   fi
 done
@@ -136,7 +136,7 @@ for (root, dirs, files) in os.walk(directory):
     for file in files:
         in_name = join(root, file)
         cur_size = getsize(in_name)
-        if file.endswith(suffix) and cur_size <= size:
+        if file.endswith(suffix) and cur_size < size:
             with open(in_name, "r") as input:
                 with open("ans", "a") as output:
                     for line in input:

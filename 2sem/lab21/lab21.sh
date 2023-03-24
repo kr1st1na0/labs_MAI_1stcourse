@@ -21,7 +21,7 @@ echo -n > /home/kristina/lab21/answer
 for i in $(find ./ -name \*."$suffix" -type f -print)
 do
   file_size=$(stat -c %s "$i")
-  if [ "$file_size" -le "$size" ]; then
+  if [ "$file_size" -lt "$size" ]; then
     cat "$i"  >> /home/kristina/lab21/answer
   fi
 done
