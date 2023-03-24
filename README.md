@@ -1,7 +1,7 @@
 ## Just for me
 
 CodeForces:
-- div2 - https://codeforces.com/contest/1806 - 1 left
+- div2 - https://codeforces.com/contest/1806 - 1 left - for lab26
 - div3 - https://codeforces.com/contest/1800 - 1 left
 - div4 - https://codeforces.com/contest/1807 - 3 left
 
