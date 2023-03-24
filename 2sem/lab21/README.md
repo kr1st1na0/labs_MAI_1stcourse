@@ -108,9 +108,45 @@ cat /home/kristina/lab21/answer
 rm /home/kristina/lab21/answer
 ```
 
-<b>Python</b>
+<b>Python:</b>
 ```
--
+#!/usr/bin/env python
+
+import os
+from os.path import getsize
+from os.path import join
+
+print("Enter the suffix of files or press '?' if you don't want to enter the value:")
+suffix = input()
+
+print("Enter the size in bytes or press '?' if you don't want to enter the value:")
+size = input()
+
+if suffix == "?":
+    suffix = "txt"
+
+if size == "?":
+    size = int(100)
+else:
+    size = int(size)
+
+directory = "lab21"
+
+for (root, dirs, files) in os.walk(directory):
+    for file in files:
+        in_name = join(root, file)
+        cur_size = getsize(in_name)
+        if file.endswith(suffix) and cur_size <= size:
+            with open(in_name, "r") as input:
+                with open("ans", "a") as output:
+                    for line in input:
+                        output.write(line)
+
+with open("ans", "r") as print_content:
+    for line in print_content:
+        print(line, end = '')
+
+os.remove("ans")
 ```
 
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
@@ -119,6 +155,7 @@ rm /home/kristina/lab21/answer
 
 ## 8. Распечатка протокола 
 
+<b>Bash:</b>
 ```
 kristina@kristina-VirtualBox:~/lab21$ ls -l
 итого 36
@@ -191,8 +228,78 @@ int main() {
 
 ```
 
+<b>Python:</b>
 ```
--
+kristina@kristina-VirtualBox:~/lab21$ ls -l
+итого 36
+-rw-rw-r-- 1 kristina kristina    35 мар 18 12:31 1.txt
+-rw-rw-r-- 1 kristina kristina    94 мар 18 03:45 2.txt
+-rw-rw-r-- 1 kristina kristina  3278 мар 18 03:46 3.txt
+-rw-rw-r-- 1 kristina kristina    64 мар 18 02:06 4.c
+-rwxrwxr-x 1 kristina kristina 15960 мар 18 02:06 a.out
+-rwxrwxr-x 1 kristina kristina   608 мар 20 13:25 lab21.sh
+kristina@kristina-VirtualBox:~/lab21$ cat 1.txt
+sbkdvjcndd
+fbijngfbn
+vnfiujfnfjnjf
+kristina@kristina-VirtualBox:~/lab21$ cat 2.txt
+4634783597598
+39847427497498
+244842082409
+35yhgf9385yhg3oir5h
+g359uyh39ou8h8ighu
+358ryhg8392g
+kristina@kristina-VirtualBox:~/lab21$ cat 3.txt
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+hbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgckhbkjugbuigbyivfugclghcggfcgfhckgtfcgck
+kristina@kristina-VirtualBox:~/lab21$ cat 4.c
+#include <stdio.h>
+
+int main() {
+  printf("Hello, world!\n");
+}
+kristina@kristina-VirtualBox:~/lab21$ cd ..
+kristina@kristina-VirtualBox:~$ python3 lab21.py
+Enter the suffix of files or press '?' if you don't want to enter the value:
+?
+Enter the size in bytes or press '?' if you don't want to enter the value:
+?
+sbkdvjcndd
+fbijngfbn
+vnfiujfnfjnjf
+4634783597598
+39847427497498
+244842082409
+35yhgf9385yhg3oir5h
+g359uyh39ou8h8ighu
+358ryhg8392g
+kristina@kristina-VirtualBox:~$ python3 lab21.py
+Enter the suffix of files or press '?' if you don't want to enter the value:
+txt
+Enter the size in bytes or press '?' if you don't want to enter the value:
+60
+sbkdvjcndd
+fbijngfbn
+vnfiujfnfjnjf
+kristina@kristina-VirtualBox:~$ python3 lab21.py
+Enter the suffix of files or press '?' if you don't want to enter the value:
+c
+Enter the size in bytes or press '?' if you don't want to enter the value:
+100
+#include <stdio.h>
+
+int main() {
+  printf("Hello, world!\n");
+}
+
 ```
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
