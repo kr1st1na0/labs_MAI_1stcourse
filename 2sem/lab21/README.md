@@ -136,11 +136,11 @@ for (root, dirs, files) in os.walk(directory):
     for file in files:
         in_name = join(root, file)
         cur_size = getsize(in_name)
-        if file.endswith(suffix) and cur_size < size:
-            with open(in_name, "r") as input:
-                with open("ans", "a") as output:
-                    for line in input:
-                        output.write(line)
+        if not file.endswith(suffix) or cur_size >= size:
+            continue
+        with open(in_name, "r") as input, open("ans", "a") as output:
+            for line in input:
+                output.write(line)
 
 with open("ans", "r") as print_content:
     for line in print_content:
