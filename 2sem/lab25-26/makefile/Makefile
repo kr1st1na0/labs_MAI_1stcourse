@@ -16,4 +16,4 @@ sort.o: sort.c sort.h
 	$(CC) $(CFLAGS) -c sort.c
 
 clean: 
-	rm $(PROG) $(PROG)
+	rm $(PROG)

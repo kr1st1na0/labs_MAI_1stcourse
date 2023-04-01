@@ -82,7 +82,7 @@ sort.o: sort.c sort.h
 	$(CC) $(CFLAGS) -c sort.c
 
 clean: 
-	rm $(PROG) $(PROG)
+	rm $(PROG)
 ```
 
 <b>Lab26</b>
@@ -97,8 +97,7 @@ clean:
 ## 8. Распечатка протокола 
 
 <b>Lab25</b>
-```
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ make                                                           gcc -g -o program main.o list.o sort.o                                                                                  kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ ./a.out                                                        Doubly linked list                                                                                                      -                                                                                                                       Enter '1' if you want ot check if list empty or enter any another number: 1                                             The list is empty                                                                                                       Enter the size: 5                                                                                                       Enter the root value: 1                                                                                                 Enter the node value: 2                                                                                                 Enter the node value: 3                                                                                                 Enter the node value: 73                                                                                                Enter the node value: 4                                                                                                 Your list: 1 <-> 2 <-> 3 <-> 73 <-> 4                                                                                   1. Add;                                                                                                                 2. Delete node;                                                                                                         3. Bubble Sort;                                                                                                         4. Print List;                                                                                                          5. Check if list is empty;                                                                                              0. Quit.                                                                                                                -                                                                                                                       Enter the number: 1                                                                                                     Enter the node value: 20                                                                                                Enter the number: 4                                                                                                     1 <-> 2 <-> 3 <-> 73 <-> 4 <-> 20                                                                                       Enter the number: 2                                                                                                     Enter the node value: 2                                                                                                 Enter the number: 4                                                                                                     1 <-> 3 <-> 73 <-> 4 <-> 20                                                                                             Enter the number: 5                                                                                                     The list is not empty                                                                                                   Enter the number: 3                                                                                                     Bubble Sort completed                                                                                                   Enter the number: 4                                                                                                     1 <-> 3 <-> 4 <-> 20 <-> 73                                                                                             Enter the number: 0                                                                                                     Finished  
+```                    
 ```
 
 <b>Lab26</b>
@@ -128,7 +127,7 @@ kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ make                   
 
 
 ## 11. Выводы
-В результате выполнения работы была выполнена работа, которая выполняет выполненную работу. Были приобретены навыки работы по работе с выполненной работой, работающей с выполнением работы.
+Были изучены различные абстрактные типы данных. Был составлен программный модуль, сортирующий экземпляр указанного абстрактного типа данных заданным методом на языке Си. Также была изучена утилита make. В результате выполнения работы, были приобретены навыки, которые будут полезны для выполнения других лабораторных работ и курсовых проектов.
 
 Недочёты при выполнении задания могут быть устранены следующим образом: —
 
