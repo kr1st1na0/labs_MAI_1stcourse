@@ -63,6 +63,7 @@
 4. PrintList - печатает список
 5. ListIsEmpty - проверяет, пуст ли список
 6. Size - печатает размер списка
+7. Procedure - меняет местами два элемента, если первый больше второго
 
 <b>Lab26</b>
 ```
@@ -171,13 +172,22 @@ void BubbleSort() {
     }
 }
 
-/*
 // Swaps 2 elements if the first is greater than the second one
 void Procedure() {
     int index = head;
-
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (list[j].data > list[j + 1].data) {
+                int temp = list[j].data;
+                list[j].data = list[j + 1].data;
+                list[j + 1].data = temp;
+                printf("Completed\n");
+                return;
+            }
+        }
+    }
+    printf("All sorted\n");
 }
-*/
 
 int main() {
     printf("Doubly linked list\n-\n");
@@ -208,7 +218,7 @@ int main() {
     printf("Your list: ");
     PrintList();
     int number, value, t = 1;
-    printf("\n1. Push_back;\n2. Delete node;\n3. Bubble Sort;\n4. Print List;\n5. Check if list is empty;\n6. Size;\n0. Quit.\n-\n");
+    printf("\n1. PushBack;\n2. Delete node;\n3. Bubble Sort;\n4. PrintList;\n5. Check if the list is empty;\n6. Size;\n7. Procedure;\n0. Quit.\n-\n");
     while (t != 0) {
         printf("Enter the number: ");
         scanf("%d", &number);
@@ -241,6 +251,10 @@ int main() {
         }
         else if (number == 6) {
             printf("List size = %d\n", size);
+        }
+        else if (number == 7) {
+            Procedure();
+            //printf("Completed\n");
         }
         else if (number == 0) {
             printf("Finished\n");
@@ -598,7 +612,54 @@ Enter the number: 5
 The list is not empty
 Enter the number: 0
 Finished
-
+kristina@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc lab26.c && ./a.out
+Doubly linked list
+-
+Enter '1' if you want ot check if list empty or enter any another number: 1
+The list is empty
+Enter the size: 5
+Enter the node value: 56
+Enter the node value: 17
+Enter the node value: 8
+Enter the node value: 9
+Enter the node value: 23
+Your list: 56 <-> 17 <-> 8 <-> 9 <-> 23
+1. PushBack;
+2. Delete node;
+3. Bubble Sort;
+4. Print list;
+5. Check if the list is empty; 
+6. Size;
+0. Quit.
+-
+Enter the number: 7
+Completed
+Enter the number: 4
+17 <-> 56 <-> 8 <-> 9 <-> 23
+Enter the number: 7
+Completed
+Enter the number: 4
+17 <-> 8 <-> 56 <-> 9 <-> 23
+Enter the number: 7
+Completed
+Enter the number: 4
+8 <-> 17 <-> 56 <-> 9 <-> 23
+Enter the number: 7
+Completed
+Enter the number: 4
+8 <-> 17 <-> 9 <-> 56 <-> 23
+Enter the number: 7
+Completed
+Enter the number: 4
+8 <-> 9 <-> 17 <-> 56 <-> 23
+Enter the number: 7
+Completed
+Enter the number: 4
+8 <-> 9 <-> 17 <-> 23 <-> 56
+Enter the number: 7
+All sorted
+Enter the number: 0
+Finished
 ```
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
