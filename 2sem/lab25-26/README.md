@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins> </ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5</ins>
 
-<b>Отчет сдан</b> «1» («8») <ins>апреля</ins> <ins>2023</ins> г., <b>итоговая оценка</b> <ins> </ins>
+<b>Отчет сдан</b> «1» («8») <ins>апреля</ins> <ins>2023</ins> г., <b>итоговая оценка</b>5<ins> </ins>
 
 <b>Подпись преподавателя:</b> ___________
 
@@ -57,12 +57,18 @@
 
 ## 6. Идея, метод, алгоритм решения задачи (в формах: словесной, псевдокода, графической [блок-схема, диаграмма, рисунок, таблица] или формальные спецификации с пред- и постусловиями)
 
-1. PushBack - добавляет новый элемент
-2. Delete - удаляет элемент по его значению
-3. BubbleSort - сортировка пузырьком
-4. PrintList - печатает список
-5. ListIsEmpty - проверяет, пуст ли список
-6. Size - печатает размер списка
+1. pushBack - добавляет новый элемент в конец списка
+2. pushFront - добавляет новый элемент в начало списка
+3. popBack - удаляет последний элемент
+4. popFront - удаляет первый элемент
+5. Erase - удаляет элемент по его значению
+6. Destroy - полностью удаляет список
+7. Clear - затирает список
+8. listSize - печатает размер списка
+9. bubbleSort - сортировка пузырьком
+10. isEmpty - проверяет, пуст ли список
+11. printList - печатает список
+
 7. Procedure - меняет местами два элемента, если первый больше второго
 
 <b>Lab26</b>
@@ -70,133 +76,209 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <malloc.h>
+#include <errno.h>
 
-#define MAX_SIZE 100
+#define MAX_SIZE (100U)
 
-typedef struct Node {
-    int data;
-    int prev;
-    int next;
+typedef struct {
+    int value;
+    ptrdiff_t prev;
+    ptrdiff_t next;
 } Node;
 
-Node list[MAX_SIZE];
-int head = -1;
-int tail = -1;
-int size = 0;
+typedef struct {
+	Node *data;
+    ptrdiff_t head;
+    ptrdiff_t tail;
+    size_t size;
+} List;
 
-// Add a new node in the end of the list
-void PushBack(int value) {
-    if (size == MAX_SIZE) {
-        printf("ERROR! Your list is full.\n");
-        return;
-    }
-    int index = size++;
-    list[index].data = value;
-    list[index].prev = tail;
-    list[index].next = -1;
-    if (head == -1) {
-        head = index;
-        tail = index;
-    } else {
-        list[tail].next = index;
-        tail = index;
-    }
+bool create(List * const list) {
+    Node * const ptr = malloc(MAX_SIZE * sizeof(Node));
+    if (ptr == NULL)
+        return false;
+    list->data = ptr;
+    list->head = list->tail = -1;
+    list->size = 0;
+    return true;
+}
+
+void clear(List * const list) {
+    list->head = list->tail = -1;
+    list->size = 0;
+}
+
+void destroy(List * const list) {
+    free(list->data);
+}
+
+void unlink(List * const list, const ptrdiff_t index) {
+    Node * const node = list->data + index;
+    if (list->head == index)
+        list->head = node->next;
+    else
+        list->data[node->prev].next = node->next;
+    if (list->tail == index)
+        list->tail = node->prev;
+    else
+        list->data[node->next].prev = node->prev;
+    --list->size;
 }
 
 // Delete the node
-void Delete(int value) {
-    int index = head;
-    while (index != -1) {
-        if (list[index].data == value) {
-            //
-            if (index == head) {
-                head = list[index].next;
-                if (head != -1) {
-                    list[head].prev = -1;
-                }
-            // ok
-            } else if (index == tail) {
-                tail = list[index].prev;
-                if (tail != -1) {
-                    list[tail].next = -1;
-                }
-            //
-            } else {
-                list[list[index].prev].next = list[index].next;
-                list[list[index].next].prev = list[index].prev;
-            }
-            list[index].data = -1;
-            list[index].prev = -1;
-            list[index].next = -1;
-            size--;
-            return;
+bool erase(List * const list, int value) {
+    for (ptrdiff_t index = list->head; index != -1; index = list->data[index].next)
+        if (list->data[index].value == value) {
+            unlink(list, index);
+            return true;
         }
-        index = list[index].next;
+    return false;
+}
+
+bool back(const List * const list, int * const value) {
+    if (list->size == 0)
+        return false;
+    *value = list->data[list->tail].value;
+    return true;
+}
+
+bool front(const List * const list, int * const value) {
+	  if (list->size == 0)
+        return false;
+    *value = list->data[list->head].value;
+    return true;
+}
+
+// Add a new node in the end of the list
+bool pushBack(List * const list, int value) {
+    if (list->size == MAX_SIZE)
+        return false;
+    const ptrdiff_t index = list->size;
+    list->data[index].value = value;
+    list->data[index].prev = list->tail;
+    list->data[index].next = -1;
+    if (list->size == 0) {
+        list->head = index;
+        list->tail = index;
+    } else {
+        list->data[list->tail].next = index;
+        list->tail = index;
     }
-    printf("Element %d wasn't found.\n", value);
+    ++list->size;
+    return true;
+}
+
+bool pushFront(List * const list, int value) {
+    if (list->size == MAX_SIZE)
+        return false;
+    const ptrdiff_t index = list->size;
+    list->data[index].value = value;
+    list->data[index].prev = -1;
+    list->data[index].next = list->head;
+    if (list->size == 0) {
+        list->head = index;
+        list->tail = index;
+    } else {
+        list->data[list->head].prev = index;
+        list->head = index;
+    }
+    ++list->size;
+    return true;
+}
+
+bool popBack(List * const list) {
+    if (list->size == 0)
+        return false;
+    unlink(list, list->tail);
+    return true;
+}
+
+bool popFront(List * const list) {
+    if (list->size == 0)
+        return false;
+    unlink(list, list->head);
+    return true;
 }
 
 // Print the list
-void PrintList() {
-    int index = head;
-    while (index != -1) {
-        if (list[index].next != -1) {
-            printf("%d <-> ", list[index].data);
-        }
-        else {
-            printf("%d", list[index].data);
-        }
-        index = list[index].next;
-    }
+void printList(const List * const list) {
+    for (ptrdiff_t index = list->head; index != -1; index = list->data[index].next)
+        if (list->data[index].next != -1)
+            printf("%d <-> ", list->data[index].value);
+        else
+            printf("%d", list->data[index].value);
 }
 
 // Check if list is empty
-bool ListIsEmpty() {
-    bool flag = false;
-    if (head == -1) {
-        flag = true;
-    }
-    return flag;
+bool isEmpty(const List * const list) {
+    return list->size == 0;
 }
 
-// Bubble Sort
-void BubbleSort() {
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (list[j].data > list[j + 1].data) {
-                int temp = list[j].data;
-                list[j].data = list[j + 1].data;
-                list[j + 1].data = temp;
-            }
-        }
-    }
+size_t listSize(const List * const list) {
+    return list->size;
+}
+
+void swap(List * const first, List * const second) {
+    List tmp = *first;
+    *first = *second;
+    *second = tmp;
 }
 
 // Swaps 2 elements if the first is greater than the second one
-void Procedure() {
-    int index = head;
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (list[j].data > list[j + 1].data) {
-                int temp = list[j].data;
-                list[j].data = list[j + 1].data;
-                list[j + 1].data = temp;
-                printf("Completed\n");
-                return;
-            }
-        }
+bool procedure(List * const list, List * const tmp) {
+    bool flag = false;
+    while (!isEmpty(list)) {
+        int first, second;
+        front(list, &second);
+        popFront(list);
+        if (back(tmp, &first) && second < first) {
+            popBack(tmp);
+            pushBack(tmp, second);
+            pushBack(tmp, first);
+            flag = true;
+        } else
+            pushBack(tmp, second);
     }
-    printf("All sorted\n");
+    swap(list, tmp);
+    return flag;
+}
+
+bool bubbleSort(List * const list) {
+    List result, tmp;
+    if (!create(&result))
+        return false;
+    if (!create(&tmp)) {
+        destroy(&result);
+        return false;
+    }
+    while (procedure(list, &tmp)) {
+        int value;
+        back(list, &value);
+        popBack(list);
+        pushFront(&result, value);
+    }
+    while (!isEmpty(&result)) {
+        int value;
+        front(&result, &value);
+        popFront(&result);
+        pushBack(list, value);
+    }
+    destroy(&tmp);
+    destroy(&result);
+    return true;
 }
 
 int main() {
     printf("Doubly linked list\n-\n");
+    List list;
+    create(&list);
     // Empty
     int temp = 0;
     printf("Enter '1' if you want ot check if list empty or enter any another number: ");
     scanf("%d", &temp);
     if (temp == 1) {
-        bool empty = ListIsEmpty();
+        bool empty = isEmpty(&list);
         if (empty) {
             printf("The list is empty\n");
         }
@@ -206,42 +288,59 @@ int main() {
     }
 
     // List generation
-    int x, n;
+    int value, n;
     printf("Enter the size: ");
     scanf("%d", &n);
     while (n > 0) {
         printf("Enter the node value: ");
-        scanf("%d", &x);
-        PushBack(x);
+        scanf("%d", &value);
+        pushBack(&list, value);
         n -= 1;
     }
     printf("Your list: ");
-    PrintList();
-    int number, value, t = 1;
-    printf("\n1. PushBack;\n2. Delete node;\n3. Bubble Sort;\n4. PrintList;\n5. Check if the list is empty;\n6. Size;\n7. Procedure;\n0. Quit.\n-\n");
+    printList(&list);
+    int number, t = 1;
+    printf("\n1. pushBack;\n2. pushFront;\n3. popBack;\n4. popFront;\n5. Erase;\n6. Destroy;\n7. Clear;\n8. Size;\n9. bubbleSort;\n10. Check if the list is empty;\n11. Print list;\n0. Quit.\n-\n");
     while (t != 0) {
         printf("Enter the number: ");
         scanf("%d", &number);
         if (number == 1) {  
             printf("Enter the node value: ");
-            scanf("%d", &x);
-            PushBack(x);
+            scanf("%d", &value);
+            pushBack(&list, value);
         }
         else if (number == 2) {
             printf("Enter the node value: ");
             scanf("%d", &value);
-            Delete(value);
+            pushFront(&list, value);
         }
         else if (number == 3) {
-            BubbleSort();
-            printf("Bubble Sort completed\n");
+            popBack(&list);
         }
         else if (number == 4) {
-            PrintList();
-            printf("\n");
+            popFront(&list);
         }
         else if (number == 5) {
-            bool empty = ListIsEmpty();
+            printf("Enter the node value: ");
+            scanf("%d", &value);
+            erase(&list, value);
+        }
+        else if (number == 6) {
+            destroy(&list);
+        }
+        else if (number == 7) {
+            clear(&list);
+        }
+        else if (number == 8) {
+            size_t size = listSize(&list);
+            printf("List size = %zu\n", size);
+        }
+        else if (number == 9) {
+            bubbleSort(&list);
+            printf("Bubble Sort completed\n");
+        }
+        else if (number == 10) {
+            bool empty = isEmpty(&list);
             if (empty) {
                 printf("The list is empty\n");
             }
@@ -249,11 +348,9 @@ int main() {
                 printf("The list is not empty\n");
             }
         }
-        else if (number == 6) {
-            printf("List size = %d\n", size);
-        }
-        else if (number == 7) {
-            Procedure();
+        else if (number == 11) {
+            printList(&list);
+            printf("\n");
         }
         else if (number == 0) {
             printf("Finished\n");
@@ -262,6 +359,7 @@ int main() {
     }
     return 0;
 }
+
 ```
 
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию].
@@ -573,90 +671,57 @@ void BubbleSort(int *mas, int count) {
 
 <b>Lab26</b>
 ```
-kristina@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc lab26.c && ./a.out
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc lab26.c && ./a.out
 Doubly linked list
 -
 Enter '1' if you want ot check if list empty or enter any another number: 1
 The list is empty
 Enter the size: 5
-Enter the node value: 56
-Enter the node value: 17
-Enter the node value: 8
-Enter the node value: 9
+Enter the node value: 34
 Enter the node value: 23
-Your list: 56 <-> 17 <-> 8 <-> 9 <-> 23
-1. PushBack;
-2. Delete node;
-3. Bubble Sort;
-4. Print list;
-5. Check if the list is empty; 
-6. Size;
-0. Quit.
--
-Enter the number: 3
-Bubble Sort completed
-Enter the number: 4
-8 <-> 9 <-> 17 <-> 23 <-> 56
-Enter the number: 1
 Enter the node value: 78
-Enter the number: 4
-8 <-> 9 <-> 17 <-> 23 <-> 56 <-> 78
-Enter the number: 6
-List size = 6
-Enter the number: 2
-Enter the node value: 9
-Enter the number: 4
-8 <-> 17 <-> 23 <-> 56 <-> 78
-Enter the number: 5
-The list is not empty
-Enter the number: 0
-Finished
-kristina@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc lab26.c && ./a.out
-Doubly linked list
--
-Enter '1' if you want ot check if list empty or enter any another number: 1
-The list is empty
-Enter the size: 5
-Enter the node value: 56
-Enter the node value: 17
-Enter the node value: 8
-Enter the node value: 9
-Enter the node value: 23
-Your list: 56 <-> 17 <-> 8 <-> 9 <-> 23
-1. PushBack;
-2. Delete node;
-3. Bubble Sort;
-4. Print list;
-5. Check if the list is empty; 
-6. Size;
+Enter the node value: 5
+Enter the node value: 19
+Your list: 34 <-> 23 <-> 78 <-> 5 <-> 19
+1. pushBack;
+2. pushFront;
+3. popBack;
+4. popFront;
+5. Erase;
+6. Destroy;
+7. Clear;
+8. Size;
+9. bubbleSort;
+10. Check if the list is empty;
+11. Print list;
 0. Quit.
 -
-Enter the number: 7
-Completed
+Enter the number: 1
+Enter the node value: 45
+Enter the number: 11
+34 <-> 23 <-> 78 <-> 5 <-> 19 <-> 45
+Enter the number: 2
+Enter the node value: 44
+Enter the number: 11
+44 <-> 34 <-> 23 <-> 78 <-> 5 <-> 19 <-> 45
+Enter the number: 3
+Enter the number: 11
+44 <-> 34 <-> 23 <-> 78 <-> 5 <-> 19
 Enter the number: 4
-17 <-> 56 <-> 8 <-> 9 <-> 23
+Enter the number: 11
+34 <-> 23 <-> 78 <-> 5 <-> 19
+Enter the number: 8
+List size = 5
+Enter the number: 10
+The list is not empty
+Enter the number: 9
+Bubble Sort completed
+Enter the number: 11
+5 <-> 19 <-> 23 <-> 34 <-> 78
 Enter the number: 7
-Completed
-Enter the number: 4
-17 <-> 8 <-> 56 <-> 9 <-> 23
-Enter the number: 7
-Completed
-Enter the number: 4
-8 <-> 17 <-> 56 <-> 9 <-> 23
-Enter the number: 7
-Completed
-Enter the number: 4
-8 <-> 17 <-> 9 <-> 56 <-> 23
-Enter the number: 7
-Completed
-Enter the number: 4
-8 <-> 9 <-> 17 <-> 56 <-> 23
-Enter the number: 7
-Completed
-Enter the number: 4
-8 <-> 9 <-> 17 <-> 23 <-> 56
-Enter the number: 7
-All sorted
+Enter the number: 11
+
+Enter the number: 6
 Enter the number: 0
 Finished
 ```
