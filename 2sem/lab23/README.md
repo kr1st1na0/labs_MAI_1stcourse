@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins>-</ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5</ins>
 
-<b>Отчет сдан</b> «22» <ins>апреля</ins> <ins>2023</ins> г., <b>итоговая оценка</b>-<ins> </ins>
+<b>Отчет сдан</b> «22» <ins>апреля</ins> <ins>2023</ins> г., <b>итоговая оценка</b>5<ins>
 
 <b>Подпись преподавателя:</b> ___________
 
@@ -76,10 +76,10 @@
 #include <limits.h>
 
 struct TreeNode {
-    float value;
     struct TreeNode *left;
     struct TreeNode *right;
     struct TreeNode *parent;
+    float value;
 };
 
 typedef struct TreeNode TreeNode;

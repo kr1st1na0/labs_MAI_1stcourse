@@ -6,10 +6,10 @@
 #include <limits.h>
 
 struct TreeNode {
-    float value;
     struct TreeNode *left;
     struct TreeNode *right;
     struct TreeNode *parent;
+    float value;
 };
 
 typedef struct TreeNode TreeNode;
