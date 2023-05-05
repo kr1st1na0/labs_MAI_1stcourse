@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins>-</ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5</ins>
 
-<b>Отчет сдан</b> «6» <ins>мая</ins> <ins>2023</ins> г., <b>итоговая оценка</b>-<ins>
+<b>Отчет сдан</b> «6» <ins>мая</ins> <ins>2023</ins> г., <b>итоговая оценка</b>5<ins>
 
 <b>Подпись преподавателя:</b> ___________
 
@@ -18,11 +18,11 @@
 ## 1. Тема
 Линейные списки
 ## 2. Цель работы
-Составить и отладить программу на языке Си для обработки линейного списа заданной организации с отображением списка на динамические структуры, содержащего узлы типа int.
+Составить и отладить программу на языке Си для обработки линейного списа заданной организации с отображением списка на динамические структуры, содержащего узлы типа int. Навигацию по списку следует реализовать с применением итераторов.
 ## 3. Задание (вариант № 3)
-Нестандартное действие: 2 % 15 + 1 = 3
-
-Удалить из списка все элементы, предшествующие и последующие заданному значению.
+- Тип элемента спика: 8 % 8 + 1 = 1 - целый
+- Вид списка: (2 div 2) % 6 + 1 = 2 - линейный однонаправленный
+- Нестандартное действие: 2 % 15 + 1 = 3 - удалить из списка все элементы, предшествующие и последующие заданному значению
 
 ## 4. Оборудование:
 <b>Процессор:</b> AMD Ryzen9-5900HS, 8 ядер
@@ -52,16 +52,21 @@
 
 ## 6. Идея, метод, алгоритм решения задачи (в формах: словесной, псевдокода, графической [блок-схема, диаграмма, рисунок, таблица] или формальные спецификации с пред- и постусловиями)
 
-1. listCreate - создание списка
-2. listClear - очистка списка
-3. listPushBack - добавление нового элемента в конец списка
-4. listPushFront - добавление нового элемента в начало списка
-5. listPopBack - удаление последнего элемента
-6. listPopFront - удаление первого элемента
-7. listSize - размер списка
-8. listIsEmpty - проверка списка на пустоту
-9. listPrint - печатать списка
-10. listTask - процедура, выполняющая нестандартной действие по номеру варианта 
+1. listIteratorEnd - итератор последнего элемента 
+2. listIteratorBegin - итератор первого элемента
+3.listIterator Equal - проверка на равенство двух итераторов
+4. listIteratorGet - возвращает значение по итератора
+5. listIteratorSet - устанавливает значение по итератору
+6. listIteratorNext - возвращает итератор следующего элемента 
+7. listIteratorIs - возвращает итератор элемента 
+8. listCreate - создание списка
+9. listIsEmpty - проверка списка на пустоту
+10. listSize - размер списка
+11. listInsert - добавление нового элемента в список
+12. listDelete - удаление элемента из списка
+13. listPrint - печатать списка
+14. listClear - очистка списка
+15. listTask - процедура, выполняющая нестандартной действие по номеру варианта 
 
 
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию].
@@ -74,198 +79,181 @@
 
 struct ListNode {
     struct ListNode *next;
-    struct ListNode *prev;
     int value;
 };
 
 typedef struct ListNode ListNode;
 
 typedef struct {
-    ListNode *head;
-    ListNode *tail;
-    size_t size;
+    struct ListNode *head;
+    int size;
 } List;
 
-List* listCreate() {
-    List *tmp = (List*) malloc(sizeof(List));
-    tmp->size = 0;
-    tmp->head = tmp->tail = NULL;
+typedef struct {
+    struct ListNode *node;
+} ListIterator;
+
+ListIterator listIteratorEnd(List * const list) {
+    ListIterator tmp = {list->head->next};
     return tmp;
 }
 
-void listClear(List * const list) {
-    ListNode *node = list->head;
-    ListNode *tmp = NULL;
-    while (node) {
-        tmp = node->next;
-        free(node);
-        node = tmp;
+ListIterator listIteratorBegin(List * const list) {
+    ListIterator tmp = {list->head};
+    return tmp;
+}
+
+bool listIteratorEqual(ListIterator * const first, ListIterator * const second) {
+    return first->node == second->node;
+}
+
+int listIteratorGet(ListIterator * const i) {
+    return i->node->value;
+}
+
+void listIteratorSet(const ListIterator *i, const int value) {
+    i->node->value = value;
+}
+
+ListIterator *listIteratorNext(ListIterator * const i) {
+    i->node = i->node->next;
+    return i;
+}
+
+ListIterator listIteratorIs(List * const list, const int n) {
+    ListIterator tmp = listIteratorBegin(list);
+    for (int i = 0; i < n; i++) {
+        listIteratorNext(&tmp);
     }
-    list->head = list->tail = NULL;
+    return tmp;
+}
+
+void listCreate(List * const list) {
+    list->head = malloc(sizeof(ListNode));
+    list->head->next = list->head;
     list->size = 0;
-}
-
-int listPushBack(List * const list, int value) {
-    ListNode *tmp = (ListNode*) malloc(sizeof(ListNode));
-    if (tmp == NULL) {
-        return errno;
-    }
-    tmp->value = value;
-    tmp->next = NULL;
-    tmp->prev = list->tail;
-    if (list->tail) {
-        list->tail->next = tmp;
-    }
-    list->tail = tmp;
- 
-    if (list->head == NULL) {
-        list->head = tmp;
-    }
-    list->size++;
-}
-
-int listPushFront(List * const list, int value) {
-    ListNode *tmp = (ListNode*) malloc(sizeof(ListNode));
-    if (tmp == NULL) {
-        return errno;
-    }
-    tmp->value = value;
-    tmp->next = list->head;
-    tmp->prev = NULL;
-    if (list->head) {
-        list->head->prev = tmp;
-    }
-    list->head = tmp;
- 
-    if (list->tail == NULL) {
-        list->tail = tmp;
-    }
-    list->size++;
-}
-
-int listPopBack(List * const list) {
-    if (list->size == 0)
-        return EINVAL;
-    ListNode * const node = list->tail;
-    list->tail = list->tail->prev;
-    free(node);
-    if (list->tail == NULL)
-        list->head = NULL;
-    else
-        list->tail->next = NULL;
-    --list->size;
-    return 0;
-}
-
-int listPopFront(List * const list) {
-    if (list->size == 0)
-        return EINVAL;
-    ListNode * const node = list->head;
-    list->head = list->head->next;
-    free(node);
-    if (list->head == NULL)
-        list->tail = NULL;
-    else
-        list->head->prev = NULL;
-    --list->size;
-    return 0;
-}
-
-size_t listSize(List * const list) {
-    return list->size;
 }
 
 bool listIsEmpty(List * const list) {
     return list->size == 0;
 }
 
+size_t listSize(List * const list) {
+    return list->size;
+}
+
+void listInsert(List * const list, ListIterator * const i, const int value) {
+    ListIterator tmp = {malloc(sizeof(ListNode))};
+    tmp.node->value = value;
+    tmp.node->next = i->node->next;
+    i->node->next = tmp.node;
+    list->size++;
+}
+
+ListIterator listDelete(List * const list, ListIterator * const i) {
+    ListIterator tmp = listIteratorBegin(list);
+    ListIterator next = {i->node->next};
+    if (listIteratorEqual(&tmp, &next)) {
+        return tmp;
+    }
+    tmp.node = i->node->next->next;
+    ListNode *t = i->node->next;
+    i->node->next = tmp.node;
+    free(t);
+    list->size--;
+    return tmp;
+}
+
 void listPrint(List * const list) {
-    ListNode *tmp = list->head;
-    while (tmp != NULL) {
-        if (tmp->next != NULL) {
-            printf("%d <-> ", tmp->value);
-        }
-        else {
-            printf("%d", tmp->value);
-        }
-        tmp = tmp->next;
+    if (list->head == NULL) {
+        return;
+    }
+    ListIterator tmp = listIteratorBegin(list);
+    for (ListIterator i = listIteratorEnd(list); !listIteratorEqual(&i, &tmp); listIteratorNext(&i)) {
+        printf("%d ", listIteratorGet(&i));
     }
     printf("\n");
 }
 
-void listTask(List * const list, int value) {
-    ListNode *tmp = list->head;
+void listClear(List * const list) {
+    ListNode *tmp = list->head->next;
+    while (tmp != list->head) {
+        ListNode *t = tmp;
+        tmp = tmp->next;
+        free(t);
+    }
+    free(list->head);
+    list->head = 0;
+    list->size = 0;
+}
+
+bool listTask(List * const list, int value) {
+    ListIterator i = listIteratorEnd(list); 
+    ListIterator tmp = listIteratorBegin(list); 
     bool f = false;
-    while (tmp != NULL) {
-        if (tmp->value == value) {
+    while (!listIteratorEqual(&i, &tmp)) {
+        if (i.node->value == value)  {
             f = true;
             break;
         }
-        tmp = tmp->next;
+        i = *listIteratorNext(&i);
     }
     if (f) {
         listClear(list);
-        listPushFront(list, value);
+        listCreate(list);
+        ListIterator i = listIteratorIs(list, 0);
+        listInsert(list, &i, value);
+        return true;
     }
-    else {
-        printf("This element is not in the list\n");
-    }
+    return false;
 }
 
 int main() {
-    List *list = listCreate();
-    listPushBack(list, 5);
-    listPushBack(list, 7);
-    listPushBack(list, 10);
+    List *list = malloc(sizeof(List));
+    listCreate(list);
+    ListIterator i = listIteratorBegin(list);
+    int prev_index;
+    int value = 5;
+    listInsert(list, &i, value);
+    //Добавление элементов
+    prev_index = 1;
+    value = 44;
+    i = listIteratorIs(list, prev_index);
+    listInsert(list, &i, value);
+    prev_index = 2;
+    value = 23;
+    i = listIteratorIs(list, prev_index);
+    listInsert(list, &i, value);
+    prev_index = 3;
+    value = 19;
+    i = listIteratorIs(list, prev_index);
+    listInsert(list, &i, value);
+    prev_index = 4;
+    value = 90;
+    i = listIteratorIs(list, prev_index);
+    listInsert(list, &i, value);
+    prev_index = 5;
+    value = 10;
+    i = listIteratorIs(list, prev_index);
+    listInsert(list, &i, value);
     listPrint(list);
-    if (listIsEmpty(list)) printf("The list is empty\n");
-    else printf("The list is not empty\n");
-    printf("Size of the list = %ld\n_\n", listSize(list));
-
-    listClear(list);
-    if (listIsEmpty(list)) printf("The list is empty\n_\n");
-    else printf("The list is not empty\n_\n");
-
-    listPushBack(list, 5);
-    listPushBack(list, 7);
-    listPushBack(list, 10);
-    listPushFront(list, 8);
-    listPushBack(list, 90);
-    listPushBack(list, 45);
+    // Удаление элемента по номеру
+    int num = 1;
+    if (0 <= num && num < listSize(list)) {
+        i = listIteratorIs(list, num);
+        listDelete(list, &i);
+    } else {
+        printf("Element with %d number doesn't exists\n", num);
+    }
     listPrint(list);
-    printf("Size of the list = %ld\n_\n", listSize(list));
-
-    listPopBack(list);
-    listPrint(list);
-    printf("Size of the list = %ld\n_\n", listSize(list));
-    
-    listPopFront(list);
-    listPrint(list);
-    printf("Size of the list = %ld\n_\n", listSize(list));
-
-    listPushBack(list, 100);
-    listPushBack(list, 6);
-    listPushBack(list, 23);
-    listPushFront(list, 44);
-    listPrint(list);
-    printf("Size of the list = %ld\n", listSize(list));
-
+    // Задание
     /*
     Удалить из списка все элементы, предшествующие
     и последующие заданному значению.
     */
-    int x;
-    printf("_\nTASK:\nEnter the value: ");
-    scanf("%d", &x);
-    listTask(list, x);
+    listTask(list, 23);
     listPrint(list);
-    printf("Size of the list = %ld\n", listSize(list));
-    printf("_\n");
-    listPushBack(list, 1);
-    listPushBack(list, 2);
-    listPushFront(list, 3);
-    listPrint(list);
-    printf("Size of the list = %ld\n", listSize(list));
+    
     return 0;
 }
 ```
@@ -277,85 +265,10 @@ int main() {
 ## 8. Распечатка протокола 
 
 ```
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc cp8-1.c && ./a.out
-5 <-> 7 <-> 10
-The list is not empty
-Size of the list = 3
-_
-The list is empty
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90 <-> 45
-Size of the list = 6
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90
-Size of the list = 5
-_
-5 <-> 7 <-> 10 <-> 90
-Size of the list = 4
-_
-44 <-> 5 <-> 7 <-> 10 <-> 90 <-> 100 <-> 6 <-> 23
-Size of the list = 8
-_
-TASK:
-Enter the value: 100
-100
-Size of the list = 1
-_
-3 <-> 100 <-> 1 <-> 2
-Size of the list = 4
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc cp8-1.c && ./a.out
-5 <-> 7 <-> 10
-The list is not empty
-Size of the list = 3
-_
-The list is empty
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90 <-> 45
-Size of the list = 6
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90
-Size of the list = 5
-_
-5 <-> 7 <-> 10 <-> 90
-Size of the list = 4
-_
-44 <-> 5 <-> 7 <-> 10 <-> 90 <-> 100 <-> 6 <-> 23
-Size of the list = 8
-_
-TASK:
-Enter the value: 55
-This element is not in the list
-44 <-> 5 <-> 7 <-> 10 <-> 90 <-> 100 <-> 6 <-> 23
-Size of the list = 8
-_
-3 <-> 44 <-> 5 <-> 7 <-> 10 <-> 90 <-> 100 <-> 6 <-> 23 <-> 1 <-> 2
-Size of the list = 11
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc cp8-1.c && ./a.out
-5 <-> 7 <-> 10
-The list is not empty
-Size of the list = 3
-_
-The list is empty
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90 <-> 45
-Size of the list = 6
-_
-8 <-> 5 <-> 7 <-> 10 <-> 90
-Size of the list = 5
-_
-5 <-> 7 <-> 10 <-> 90
-Size of the list = 4
-_
-44 <-> 5 <-> 7 <-> 10 <-> 90 <-> 100 <-> 6 <-> 23
-Size of the list = 8
-_
-TASK:
-Enter the value: 44
-44
-Size of the list = 1
-_
-3 <-> 44 <-> 1 <-> 2
-Size of the list = 4
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C$ gcc cp8.c && ./a.out
+5 44 23 19 90 10
+5 23 19 90 10
+23
 ```
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
@@ -374,7 +287,7 @@ Size of the list = 4
 
 
 ## 11. Выводы
-Была составлена программа на языке Си для обработки линейного списка заданной организации с отображением на динамические структуры и написана процедура для выполнения нестандартного действия по номеру варианта. Были приобретены навыки, которые будут полезны для выполнения других лабораторных работ и курсовых проектов.
+Была составлена программа на языке Си для обработки линейного списка заданной организации с отображением на динамические структуры и написана процедура для выполнения нестандартного действия по номеру варианта. Была изучена навигация по списку с применением итераторов. Были приобретены навыки, которые будут полезны для выполнения других лабораторных работ и курсовых проектов.
 
 Недочёты при выполнении задания могут быть устранены следующим образом: —
 
