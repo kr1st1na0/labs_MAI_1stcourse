@@ -6,4 +6,3 @@ CodeForces:
 
 MAI_CodeForces:
 - div2 - 20 - https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427394 - 1 done
-- div2 - 21 - https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427395 - 2 done
