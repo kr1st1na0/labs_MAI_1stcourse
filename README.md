@@ -1,7 +1,6 @@
 ## Just for me
 
 CodeForces:
-- div3 - https://codeforces.com/contest/1800 - 1 left
 - div4 - https://codeforces.com/contest/1807 - 3 left
 
 MAI_CodeForces:
