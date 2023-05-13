@@ -8,9 +8,9 @@
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins>-</ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5</ins>
 
-<b>Отчет сдан</b> «13» <ins>мая</ins> <ins>2023</ins> г., <b>итоговая оценка</b>-<ins>
+<b>Отчет сдан</b> «13» <ins>мая</ins> <ins>2023</ins> г., <b>итоговая оценка</b>5<ins>
 
 <b>Подпись преподавателя:</b> ___________
 
@@ -88,38 +88,6 @@ typedef struct {
     int gpu_memory;
 } reference;
 
-/*
-// Without bin_file.bin
-void upgrade(line * l, int size) {
-    reference ref;
-    ref.cpu_freq = 2200;
-    ref.hdd_size = 4096;
-    ref.gpu_memory = 6;
-    bool f = true;
-    for (int i = 0; i < size; i++) {
-        if (l[i].spec.cpu_freq <= ref.cpu_freq || l[i].spec.hdd_size <= ref.hdd_size || l[i].spec.gpu_memory <= ref.gpu_memory) {
-            if (f) {
-                printf("---------\nNeed upgrade:\n");
-                printf("Owner\tCpu\tHdd\tGpu\tOS\n");
-                f = false;
-            }
-            printf("%s\t%d\t%d\t%d\t%s\n", l[i].owner, l[i].spec.cpu_freq, l[i].spec.hdd_size, 
-            l[i].spec.gpu_memory, l[i].spec.os_type);
-        }
-    }
-    if (f) {
-        printf("---------\nNobody needs upgrade\n");
-    }
-}
-*/
-void tablePrint(line * l, int size) {
-    printf("№  Owner\tCpu\tHdd\tGpu\tOS\n");
-    for (int i = 0; i < size; i++) {
-        printf("%d. %s\t%d\t%d\t%d\t%s\n", i + 1, l[i].owner, l[i].spec.cpu_freq, l[i].spec.hdd_size, 
-        l[i].spec.gpu_memory, l[i].spec.os_type);
-    }
-}
-
 int main(int argc, char * argv[]) {
     line l[MAX_TEXT_SIZE];
     int size = 0;
@@ -135,8 +103,6 @@ int main(int argc, char * argv[]) {
         fwrite(&l, sizeof(l), 1, out);
         ++size;
     }
-    tablePrint(l, size);
-    // upgrade(l, size);
     fclose(out);
     fclose(in);
     return 0;
@@ -147,7 +113,7 @@ int main(int argc, char * argv[]) {
 
 ```
 // Отпечатать список студентов, компьютеры которых нуждаются в апгрейде.
-// gcc cp6_task.c && ./a.out bin_file.bin
+// gcc cp6_task.c && ./a.out -f/1/2/3 bin_file.bin
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -174,34 +140,72 @@ typedef struct {
     int gpu_memory;
 } reference;
 
-int main(int argc, char *argv[]) {
-    FILE *f;
+void tablePrint(FILE *f) {
     line l[MAX_TEXT_SIZE];
     int size = 0;
+    printf("№  Owner\tCpu\tHdd\tGpu\tOS\n");
+    while (fread(&l, sizeof(l), 1, f)) {
+        printf("%d. %s\t%d\t%d\t%d\t%s\n", size + 1, l[size].owner, l[size].spec.cpu_freq, l[size].spec.hdd_size, 
+        l[size].spec.gpu_memory, l[size].spec.os_type);
+        ++size;
+    }
+}
+
+void upgrade(line * l, int p, int size, int spec[]) {
     reference ref;
     ref.cpu_freq = 2200;
     ref.hdd_size = 4096;
     ref.gpu_memory = 6;
-    bool flag = true;
-    if ((f = fopen(argv[1], "r")) == NULL) {
-        printf("Can not open file\n");
-        return 2;
-    }
-    while (fread(&l, sizeof(l), 1, f)) {
-        int spec [] = {l[size].spec.cpu_freq, l[size].spec.hdd_size, l[size].spec.gpu_memory};
+    if (p == 1) {
         if (spec[0] <= ref.cpu_freq || spec[1] <= ref.hdd_size || spec[2] <= ref.gpu_memory) {
-            if (flag) {
-                printf("Need upgrade:\n");
-                printf("Owner\tCpu\tHdd\tGpu\tOS\n");
-                flag = false;
-            }
             printf("%s\t%d\t%d\t%d\t%s\n", l[size].owner, l[size].spec.cpu_freq, l[size].spec.hdd_size, 
             l[size].spec.gpu_memory, l[size].spec.os_type);
         }
-        ++size;
     }
-    if (flag) {
-        printf("Nobody needs upgrade\n");
+    else if (p == 2) {
+        if ((spec[0] <= ref.cpu_freq && spec[1] <= ref.hdd_size || spec[2] <= ref.gpu_memory) || 
+        (spec[0] <= ref.cpu_freq || spec[1] <= ref.hdd_size || spec[2] <= ref.gpu_memory) ||
+        (spec[0] <= ref.cpu_freq && spec[2] <= ref.hdd_size || spec[1] <= ref.gpu_memory)) {
+            printf("%s\t%d\t%d\t%d\t%s\n", l[size].owner, l[size].spec.cpu_freq, l[size].spec.hdd_size, 
+            l[size].spec.gpu_memory, l[size].spec.os_type);
+        }
+    }
+    else if (p == 3) {
+        if (spec[0] <= ref.cpu_freq && spec[1] <= ref.hdd_size && spec[2] <= ref.gpu_memory) {
+            printf("%s\t%d\t%d\t%d\t%s\n", l[size].owner, l[size].spec.cpu_freq, l[size].spec.hdd_size, 
+            l[size].spec.gpu_memory, l[size].spec.os_type);
+        }
+    }
+}
+
+int main(int argc, char *argv[]) {
+    FILE *f;
+    line l[MAX_TEXT_SIZE];
+    int size = 0;
+    if (argc == 1 || argc == 2) {
+        printf("Too few arguments\n");
+        return 1;
+    }
+    if (argc > 3) {
+        printf("Too many arguments\n");
+    }
+    if (!strcmp(argv[1], "-f")) {
+        f = fopen(argv[2], "r");
+        tablePrint(f);
+    }
+    int p = atoi(argv[1]);
+    if (f = fopen(argv[2], "r"), f == NULL) {
+        printf("Can not open file\n");
+        return 2;
+    }
+    if (strcmp(argv[1], "-f")) {
+        printf("Need upgrade:\n");
+        printf("Owner\tCpu\tHdd\tGpu\tOS\n");
+    }
+    while (fread(&l, sizeof(l), 1, f)) {
+        int spec [] = {l[size].spec.cpu_freq, l[size].spec.hdd_size, l[size].spec.gpu_memory};
+        upgrade(l, p, size, spec);
+        ++size;
     }
     fclose(f);
     return 0;
@@ -237,6 +241,8 @@ Kotov 2800 1024 8 lin
 Karpov 3100 8192 16 win
 Ershov 3600 5120 8 win
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_in-out.c && ./a.out test1.txt bin_file.bin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out -f bin_f
+ile.bin
 №  Owner        Cpu     Hdd     Gpu     OS
 1. Smirnov      2000    6144    8       win
 2. Petrov       3000    4096    12      mac
@@ -258,7 +264,8 @@ kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_in-out.c &&
 18. Kotov       2800    1024    8       lin
 19. Karpov      3100    8192    16      win
 20. Ershov      3600    5120    8       win
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out bin_file.bin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 1 bin_fi
+le.bin
 Need upgrade:
 Owner   Cpu     Hdd     Gpu     OS
 Smirnov 2000    6144    8       win
@@ -270,6 +277,24 @@ Kotov   2000    7168    6       mac
 Romanov 2100    5120    6       win
 Sorokin 2500    1024    6       lin
 Kotov   2800    1024    8       lin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 2 bin_fi
+le.bin
+Need upgrade:
+Owner   Cpu     Hdd     Gpu     OS
+Smirnov 2000    6144    8       win
+Petrov  3000    4096    12      mac
+Ivanov  2500    1024    6       mac
+Popov   3200    3072    16      lin
+Egorov  2200    1000    4       mac
+Kotov   2000    7168    6       mac
+Romanov 2100    5120    6       win
+Sorokin 2500    1024    6       lin
+Kotov   2800    1024    8       lin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 3 bin_fi
+le.bin
+Need upgrade:
+Owner   Cpu     Hdd     Gpu     OS
+Egorov  2200    1000    4       mac
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ cat test2.txt
 Smirnov 2300 6144 8 win
 Petrov 3000 7168 12 mac
@@ -290,8 +315,10 @@ Sorokin 2500 8192 8 lin
 Petrov 3700 7168 12 mac
 Kotov 2800 6144 8 lin
 Karpov 3100 8192 16 win
-Ershov 3600 5120 8 win
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_in-out.c && ./a.out test2.txt bin_file.bin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_in-out.c && ./a.out test2.
+txt bin_file.bin
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out -f bin_f
+ile.bin
 №  Owner        Cpu     Hdd     Gpu     OS
 1. Smirnov      2300    6144    8       win
 2. Petrov       3000    7168    12      mac
@@ -313,8 +340,17 @@ kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_in-out.c &&
 18. Kotov       2800    6144    8       lin
 19. Karpov      3100    8192    16      win
 20. Ershov      3600    5120    8       win
-kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out bin_file.bin
-Nobody needs upgrade
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 1 bin_fi
+le.bin
+Need upgrade:
+Owner   Cpu     Hdd     Gpu     OS
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 2 bin_fi
+le.bin
+Need upgrade:
+Owner   Cpu     Hdd     Gpu     OS
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/cp6$ gcc cp6_task.c && ./a.out 3 bin_file.bin
+Need upgrade:
+Owner   Cpu     Hdd     Gpu     OS
 ```
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.

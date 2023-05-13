@@ -63,7 +63,7 @@ void binarySearch(line * l, int size, key k) {
 }
 
 void tableSort(line * l, int size) {
-    int count[size];
+    int *count = malloc(sizeof(int) * size);
     for (int i = 0; i < size; i++) {
         count[i] = 0;
     }
@@ -90,7 +90,7 @@ void tableSort(line * l, int size) {
             }
         }
     }
-    return;
+    free(count);
 }
 
 void tablePrint(line * l, int size) {

@@ -26,38 +26,6 @@ typedef struct {
     int gpu_memory;
 } reference;
 
-/*
-// Without bin_file.bin
-void upgrade(line * l, int size) {
-    reference ref;
-    ref.cpu_freq = 2200;
-    ref.hdd_size = 4096;
-    ref.gpu_memory = 6;
-    bool f = true;
-    for (int i = 0; i < size; i++) {
-        if (l[i].spec.cpu_freq <= ref.cpu_freq || l[i].spec.hdd_size <= ref.hdd_size || l[i].spec.gpu_memory <= ref.gpu_memory) {
-            if (f) {
-                printf("---------\nNeed upgrade:\n");
-                printf("Owner\tCpu\tHdd\tGpu\tOS\n");
-                f = false;
-            }
-            printf("%s\t%d\t%d\t%d\t%s\n", l[i].owner, l[i].spec.cpu_freq, l[i].spec.hdd_size, 
-            l[i].spec.gpu_memory, l[i].spec.os_type);
-        }
-    }
-    if (f) {
-        printf("---------\nNobody needs upgrade\n");
-    }
-}
-*/
-void tablePrint(line * l, int size) {
-    printf("№  Owner\tCpu\tHdd\tGpu\tOS\n");
-    for (int i = 0; i < size; i++) {
-        printf("%d. %s\t%d\t%d\t%d\t%s\n", i + 1, l[i].owner, l[i].spec.cpu_freq, l[i].spec.hdd_size, 
-        l[i].spec.gpu_memory, l[i].spec.os_type);
-    }
-}
-
 int main(int argc, char * argv[]) {
     line l[MAX_TEXT_SIZE];
     int size = 0;
@@ -73,8 +41,6 @@ int main(int argc, char * argv[]) {
         fwrite(&l, sizeof(l), 1, out);
         ++size;
     }
-    tablePrint(l, size);
-    // upgrade(l, size);
     fclose(out);
     fclose(in);
     return 0;
