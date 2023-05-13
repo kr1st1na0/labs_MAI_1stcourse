@@ -72,7 +72,7 @@
 7. Procedure - меняет местами два элемента, если первый больше второго
 
 <b>Lab26</b>
-```
+``` :src/lab26.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -367,7 +367,7 @@ int main() {
 <b>Lab25</b>
 
 Makefile:
-```
+``` :src/makefile/Makefile
 CC = gcc
 CFLAGS = -g
 OBJ = main.o list.o sort.o
@@ -390,7 +390,7 @@ clean:
 ```
 
 main.c:
-```
+``` :src/makefile/main.c
 #include <stdio.h>
 #include <malloc.h>
 #include <stdbool.h>
@@ -492,7 +492,7 @@ int main() {
 
 
 list.h:
-```
+``` :src/makefile/list.h
 #ifndef LIST_H
 #define LIST_H
 
@@ -526,7 +526,7 @@ void ArrayToList(node *root, int *mas, int count);
 ```
 
 list.c:
-```
+``` :src/makefile/list.c
 #include <stdio.h>
 #include <malloc.h>
 #include <stdbool.h>
@@ -630,7 +630,7 @@ void ArrayToList(node *root, int *mas, int count) {
 ```
 
 sort.h:
-```
+``` :src/makefile/sort.h
 #ifndef SORT_H
 #define SORT_H
 

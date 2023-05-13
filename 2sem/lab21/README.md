@@ -74,7 +74,7 @@
 10. Удаляем файл-ответ
 
 <b>Bash:</b>
-```
+``` :src/lab21.sh
 #!/bin/bash
 
 echo "Enter the suffix of files or press "?" if you don't want to enter the value:"
@@ -109,7 +109,7 @@ rm /home/kristina/lab21/answer
 ```
 
 <b>Python:</b>
-```
+``` :src/lab21.py
 #!/usr/bin/env python
 
 import os

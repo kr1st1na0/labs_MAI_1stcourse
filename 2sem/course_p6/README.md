@@ -59,7 +59,7 @@
 
 <b>cp6_in-out.c</b>
 
-```
+``` :src/cp6_in-out.c
 // Считывание текстового файла и запись считанных данных в бинарный файл.
 // gcc cp6_in-out.c && ./a.out test.txt bin_file.bin
 #include <stdlib.h>
@@ -111,7 +111,7 @@ int main(int argc, char * argv[]) {
 
 <b>cp6_task.c</b>
 
-```
+``` :src/cp6_task.c
 // Отпечатать список студентов, компьютеры которых нуждаются в апгрейде.
 // gcc cp6_task.c && ./a.out -f/1/2/3 bin_file.bin
 #include <stdlib.h>
