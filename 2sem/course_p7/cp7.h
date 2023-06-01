@@ -31,6 +31,11 @@ int matrixCreate(Matrix *matrix);
 
 void matrixDestroy(Matrix *matrix);
 
-int matrixInput(FILE * f, Matrix * matrix);
+int matrixInput(FILE * f, Matrix *matrix);
+
+int matrixGet(Matrix *matrix,  size_t index1,  size_t index2);
+
+int matrixSet(Matrix *matrix,  size_t index1,  size_t index2,  int value);
+
 
 #endif

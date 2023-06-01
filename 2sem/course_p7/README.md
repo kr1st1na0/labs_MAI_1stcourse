@@ -65,7 +65,9 @@
 7. matrixCreate - создание матрицы
 8. matrixDestroy - уничтожение матрицы
 9. matrixInput - считывание матрицы в вектор
-10. matrixTask - выполнение задания
+10. matrixGet - получить элемент по индексам
+11. matrixSet - поместить элемент в позицию
+12. matrixTask - выполнение задания
 
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию].
 
@@ -254,6 +256,41 @@ void matrixTask(Matrix * matrix) {
         }
         printf("\n");
     }
+}
+
+int matrixGet(Matrix *  matrix,  size_t index1,  size_t index2) {
+    if (matrix->m <= index1 || matrix->n <= index2)
+        return EINVAL;
+    size_t p = 0, q = 0;
+    int ans = 0;
+    for (int i = 0; i < matrix->vector.capacity - 1; ++i) {
+        if (matrix->vector.data[i].j == -1) {
+            p = matrix->vector.data[i].i;
+        } 
+        if (matrix->vector.data[i].j != -1) {
+            q = matrix->vector.data[i].j;
+            if (p == index1 && q == index2) ans = matrix->vector.data[i].value;
+        }
+    }
+    return ans;
+}
+
+int matrixSet(Matrix *  matrix,  size_t index1,  size_t index2,  int value) {
+    if (matrix->m <= index1 || matrix->n <= index2)
+        return EINVAL;
+    size_t p = 0, q = 0;
+    for (int i = 0; i < matrix->vector.capacity - 1; ++i) {
+        if (matrix->vector.data[i].j == -1) {
+            p = matrix->vector.data[i].i;
+        } 
+        if (matrix->vector.data[i].j != -1) {
+            q = matrix->vector.data[i].j;
+            if (p == index1 && q == index2)  {
+                matrix->vector.data[i].value = value;
+            }
+        }
+    }
+    return 0;
 }
 
 int main(int argc, char * argv[]) {

@@ -67,7 +67,7 @@ int matrixCreate(Matrix * const matrix) {
     const int err = vectorCreate(&matrix->vector, 1);
     if (err != 0)
         return err;
-    matrix->vector.data->j = matrix->vector.data->i = -1;
+    vectorPushBack(&matrix->vector, &(Elem) { .j = -1, .i = -1 });
     matrix->m = matrix->n = 0;
     return 0;
 }
@@ -100,6 +100,41 @@ int matrixInput(FILE * f, Matrix * matrix) {
         }
     }
     vectorPushBack(&matrix->vector, &(Elem) { .j = -1, .i = -1 }); // ending of the matrix
+    return 0;
+}
+
+int matrixGet(Matrix *  matrix,  size_t index1,  size_t index2) {
+    if (matrix->m <= index1 || matrix->n <= index2)
+        return EINVAL;
+    size_t p = 0, q = 0;
+    int ans = 0;
+    for (int i = 0; i < matrix->vector.capacity - 1; ++i) {
+        if (matrix->vector.data[i].j == -1) {
+            p = matrix->vector.data[i].i;
+        } 
+        if (matrix->vector.data[i].j != -1) {
+            q = matrix->vector.data[i].j;
+            if (p == index1 && q == index2) ans = matrix->vector.data[i].value;
+        }
+    }
+    return ans;
+}
+
+int matrixSet(Matrix *  matrix,  size_t index1,  size_t index2,  int value) {
+    if (matrix->m <= index1 || matrix->n <= index2)
+        return EINVAL;
+    size_t p = 0, q = 0;
+    for (int i = 0; i < matrix->vector.capacity - 1; ++i) {
+        if (matrix->vector.data[i].j == -1) {
+            p = matrix->vector.data[i].i;
+        } 
+        if (matrix->vector.data[i].j != -1) {
+            q = matrix->vector.data[i].j;
+            if (p == index1 && q == index2)  {
+                matrix->vector.data[i].value = value;
+            }
+        }
+    }
     return 0;
 }
 
@@ -157,6 +192,7 @@ int main(int argc, char * argv[]) {
     matrixInput(f, matrix);
     vectorPrint(&matrix->vector);
     matrixTask(matrix);
+
     fclose(f);
     return 0;
 }
