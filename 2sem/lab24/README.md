@@ -546,6 +546,8 @@ Postfix: 123 ab + gg op + + 150 +
 
 - [Задача во время контеста](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427394/submission/201953600)
 - [Дорешка](https://mai2022.contest.codeforces.com/group/Ej1bTQMkro/contest/427391/submission/206389137)
+- [Дорешка](https://codeforces.com/contest/1806/submission/208074248)
+- [Дорешка](https://codeforces.com/contest/1806/submission/208074503)
 
 
 ## 11. Выводы
