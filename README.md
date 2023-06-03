@@ -1,6 +1,6 @@
 ## Completed
 
 <p align="center">
-   <img src="https://tenor.com/ru/view/jinx-the-cat-jinx-jinx-cat-cat-computer-gif-25786466" />   
+   <img src="https://gifdb.com/images/file/ginger-cat-typing-cutely-h6bnhxfx4ptq6z1k.gif" />   
 </p>
 
