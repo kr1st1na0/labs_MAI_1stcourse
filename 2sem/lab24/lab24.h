@@ -9,7 +9,7 @@
 
 struct Stack {
     int top;
-    unsigned capacity;
+    int capacity;
     char* array;
 };
 typedef struct Stack Stack;
@@ -23,7 +23,7 @@ typedef struct {
 
 typedef union {
     Operator op;  // '+' '-' '*' '/' '^'
-    int value; // числа
+    float value; // числа
     char variable[VARIABLE_LENGTH]; //буквы
 } NodeUnion;
 
@@ -39,11 +39,12 @@ struct Node {
     NodeType nodeType;
 };
 
-Stack* stackCreate(unsigned capacity);
+Stack* stackCreate(int capacity);
 int stackEmpty(Stack* stack);
 char stackPeek(Stack* stack);
 char stackPop(Stack* stack);
 void stackPush(Stack* stack, char op);
+void stackDelete(Stack* stack);
 
 int isLetter(char ch);
 int isDigit(char ch);
@@ -51,9 +52,7 @@ int isOperator(char ch);
 int opPriority(char ch);
 void infixToPostfix(char* infix, char* postfix);
 
-
-// int abs(int x);
-Node* nodeValCreate(int val);
+Node* nodeValCreate(float val);
 Node* nodeVarCreate(char var[]);
 Node* nodeOpCreate(char op, Node* left, Node* right);
 void treeDelete(Node* root);
@@ -63,5 +62,7 @@ void treeInorder(Node* const node);
 void treePostorder(Node* const node);
 void treePrint(Node* const node, int level);
 Node* treeSimplify(Node* node);
+float ipow(float x, int step);
+Node* treeCalculate(Node * node);
 
 #endif

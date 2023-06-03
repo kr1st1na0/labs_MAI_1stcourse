@@ -6,7 +6,7 @@
 
 #include "lab24.h"
 
-Stack* stackCreate(unsigned capacity) {
+Stack* stackCreate(int capacity) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     if (stack == NULL) {
         printf("Memory allocation failed!\n");
@@ -37,6 +37,11 @@ char stackPop(Stack* stack) {
 
 void stackPush(Stack* stack, char op) {
     stack->array[++stack->top] = op;
+}
+
+void stackDelete(Stack* stack) {
+    free(stack->array);
+    free(stack);
 }
 
 int isLetter(char ch) {
@@ -86,11 +91,20 @@ void infixToPostfix(char* infix, char* postfix) {
                 printf("Invalid infix expression!\n");
                 return;
             } else { stackPop(stack); }
-        } else {
-            while (!stackEmpty(stack) && opPriority(infix[i]) <= opPriority(stackPeek(stack))) {
-                if (postfix[j] != ' ') postfix[j++] = ' ';
+        } 
+        else {
+            if (infix[i] == '^') {
+                while (stackPeek(stack) != '(' && opPriority(stackPeek(stack)) > opPriority(infix[i])) {
                 postfix[j++] = stackPop(stack);
                 postfix[j++] = ' ';
+                }
+            }
+            else {
+                while (!stackEmpty(stack) && (opPriority(stackPeek(stack)) >= opPriority(infix[i])) ) {
+                    if (postfix[j] != ' ') postfix[j++] = ' ';
+                    postfix[j++] = stackPop(stack);
+                    postfix[j++] = ' ';
+                }
             }
             stackPush(stack, infix[i]);
         }
@@ -100,13 +114,10 @@ void infixToPostfix(char* infix, char* postfix) {
         postfix[j++] = stackPop(stack);
     }
     postfix[j] = '\0';
+    stackDelete(stack);
 }
 
-// int abs(int x) {
-//     return (x > 0 ? x : 0 - x);
-// }
-
-Node* nodeValCreate(int val) {
+Node* nodeValCreate(float val) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->nodeType = VALUE;
     node->nodeUnion.value = val;
@@ -116,9 +127,8 @@ Node* nodeValCreate(int val) {
 Node* nodeVarCreate(char var[]) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->nodeType = VARIABLE;
-    for (int i = 0; i < strlen(var); ++i) {
-        node->nodeUnion.variable[i] = var[i];
-    }
+    strncpy(node->nodeUnion.variable, var, VARIABLE_LENGTH);
+    node->nodeUnion.variable[VARIABLE_LENGTH - 1] = '\0';
     return node;
 }
 
@@ -203,7 +213,7 @@ void treeInorder(Node * const node) {
         printf(")");
     }
     else if (node->nodeType == VALUE) {
-        printf("%d", node->nodeUnion.value);
+        printf("%.2f", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
         printf("%s", node->nodeUnion.variable);
@@ -219,7 +229,7 @@ void treePostorder(Node* const node) {
         printf("%c ", node->nodeUnion.op.op);
     }
     else if (node->nodeType == VALUE) {
-        printf("%d ", node->nodeUnion.value);
+        printf("%.2f ", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
         printf("%s ", node->nodeUnion.variable);
@@ -238,16 +248,15 @@ void treePrint(Node * const node, int level) {
         treePrint(node->nodeUnion.op.left, level + 1); 
     }
     else if (node->nodeType == VALUE) {
-        printf("%d\n", node->nodeUnion.value);
+        printf("%.2f\n", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
-        for (int i = 0; i < strlen(node->nodeUnion.variable); ++i) {
-            printf("%c", node->nodeUnion.variable[i]);
-        }
+        printf("%s", node->nodeUnion.variable);
         printf("\n");
     }
 }
 
+// Упростить выражения, выполнив вычитание
 Node* treeSimplify(Node* node) {
     if (node == NULL) {
         return NULL;
@@ -259,26 +268,60 @@ Node* treeSimplify(Node* node) {
             if (node->nodeUnion.op.left != NULL && node->nodeUnion.op.right != NULL) {
                 if (node->nodeUnion.op.left->nodeType == VALUE && node->nodeUnion.op.right->nodeType == VALUE) {
                     int result = node->nodeUnion.op.left->nodeUnion.value - node->nodeUnion.op.right->nodeUnion.value;
+                    free(node->nodeUnion.op.left);
+                    free(node->nodeUnion.op.right);
                     free(node);
                     return nodeValCreate(result);
                 }
-                //else if (node->nodeUnion.op.left->nodeType == VALUE || node->nodeUnion.op.right->nodeType == VALUE)
-                // (12+4)-(5+6) - в таком примере мне придется упрощать все операции до вычитания...
             }
         }
-        // else if(node->nodeUnion.op.op == '+'){
-        //     if (node->nodeUnion.op.left->nodeType == VALUE && node->nodeUnion.op.left->nodeUnion.value < 0){
-        //         node->nodeUnion.op.op = '-';
-        //         node->nodeUnion.op.left->nodeUnion.value = abs(node->nodeUnion.op.left->nodeUnion.value);
-        //     }
-        //     if (node->nodeUnion.op.right->nodeType == VALUE && node->nodeUnion.op.right->nodeUnion.value < 0){
-        //         node->nodeUnion.op.op = '-';
-        //         node->nodeUnion.op.right->nodeUnion.value = abs(node->nodeUnion.op.right->nodeUnion.value);
-        //     }
-        // }
-        // (5-112)+(9+3)+(5-4) - получится ((107-(9+3))+1), а должно быть ((-107+(9+3))+1), ну или вообще ((9+3)-106)
     }
+    return node;
+}
 
+float ipow(float x, int exp) {
+    if (exp == 0) return 1;
+    if (exp == 1) return x;
+    float base = x;
+    while (exp - 1 > 0) {
+        x *= base;
+        --exp;
+    }
+    return x;
+}
+
+Node* treeCalculate(Node * node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    if (node->nodeType == OPERATOR) {
+        node->nodeUnion.op.left = treeCalculate(node->nodeUnion.op.left);
+        node->nodeUnion.op.right = treeCalculate(node->nodeUnion.op.right);
+        if (node->nodeUnion.op.left != NULL && node->nodeUnion.op.right != NULL) {
+            if (node->nodeUnion.op.left->nodeType == VALUE && node->nodeUnion.op.right->nodeType == VALUE) {
+                if (node->nodeUnion.op.op == '+') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value + node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '-') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value - node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '^') {
+                    float res = ipow(node->nodeUnion.op.left->nodeUnion.value, node->nodeUnion.op.right->nodeUnion.value);
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '*') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value * node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '/') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value / node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+            }
+        }
+    }
     return node;
 }
 
@@ -294,17 +337,22 @@ int main() {
     printf("\n");
 
     printf("Task tree:\n");
-    treeSimplify(root);
-    treePrint(root, 0);
+    Node *snode =  treeSimplify(root);
+    treePrint(snode, 0);
     printf("\n");
 
     printf("Infix: ");
-    treeInorder(root);
+    treeInorder(snode);
     printf("\n");
     printf("Postfix: ");
-    treePostorder(root);
+    treePostorder(snode);
     printf("\n");
 
-    treeDelete(root);
+    Node *calcnode = treeCalculate(snode);
+    printf("Calculated:\n");
+    treePrint(calcnode, 0);
+    treeDelete(snode);
+    treeDelete(calcnode);
     return 0;
 }
+

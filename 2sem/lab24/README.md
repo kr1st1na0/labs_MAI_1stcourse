@@ -4,13 +4,13 @@
 
 <b>Контакты e-mail:</b> <ins>kristina.bilckova@yandex.ru</ins>
 
-<b>Работа выполнена:</b> «1» <ins>июня</ins> <ins>2023</ins> г.
+<b>Работа выполнена:</b> «3» <ins>июня</ins> <ins>2023</ins> г.
 
 <b>Преподаватель:</b> <ins>асп. каф. 806 Сахарин Никита Александрович</ins>
 
-<b>Входной контроль знаний с оценкой:</b> <ins>-</ins>
+<b>Входной контроль знаний с оценкой:</b> <ins>5</ins>
 
-<b>Отчет сдан</b> «1» <ins>июня</ins> <ins>2023</ins> г., <b>итоговая оценка</b>-<ins> </ins>
+<b>Отчет сдан</b> «3» <ins>июня</ins> <ins>2023</ins> г., <b>итоговая оценка</b>5<ins> </ins>
 
 <b>Подпись преподавателя:</b> ___________
 
@@ -68,7 +68,9 @@
 17. treeInorder - инфиксный обход дерева;
 18. treePostorder - постфиксный обход дерева;
 19. treePrint - вывод дерева;
-20. treeSimplify - задание.
+20. treeSimplify - задание;
+21. ipow - возведение в степень;
+22. treeCalculate - подсчет дерева.
 
 
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию].
@@ -85,7 +87,7 @@
 
 struct Stack {
     int top;
-    unsigned capacity;
+    int capacity;
     char* array;
 };
 typedef struct Stack Stack;
@@ -99,7 +101,7 @@ typedef struct {
 
 typedef union {
     Operator op;  // '+' '-' '*' '/' '^'
-    int value; // числа
+    float value; // числа
     char variable[VARIABLE_LENGTH]; //буквы
 } NodeUnion;
 
@@ -115,11 +117,12 @@ struct Node {
     NodeType nodeType;
 };
 
-Stack* stackCreate(unsigned capacity);
+Stack* stackCreate(int capacity);
 int stackEmpty(Stack* stack);
 char stackPeek(Stack* stack);
 char stackPop(Stack* stack);
 void stackPush(Stack* stack, char op);
+void stackDelete(Stack* stack);
 
 int isLetter(char ch);
 int isDigit(char ch);
@@ -127,7 +130,7 @@ int isOperator(char ch);
 int opPriority(char ch);
 void infixToPostfix(char* infix, char* postfix);
 
-Node* nodeValCreate(int val);
+Node* nodeValCreate(float val);
 Node* nodeVarCreate(char var[]);
 Node* nodeOpCreate(char op, Node* left, Node* right);
 void treeDelete(Node* root);
@@ -137,10 +140,11 @@ void treeInorder(Node* const node);
 void treePostorder(Node* const node);
 void treePrint(Node* const node, int level);
 Node* treeSimplify(Node* node);
+float ipow(float x, int step);
+Node* treeCalculate(Node * node);
 
 #endif
 ```
-
 
 ```:stc/lab24.c
 #include <stdio.h>
@@ -151,7 +155,7 @@ Node* treeSimplify(Node* node);
 
 #include "lab24.h"
 
-Stack* stackCreate(unsigned capacity) {
+Stack* stackCreate(int capacity) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     if (stack == NULL) {
         printf("Memory allocation failed!\n");
@@ -182,6 +186,11 @@ char stackPop(Stack* stack) {
 
 void stackPush(Stack* stack, char op) {
     stack->array[++stack->top] = op;
+}
+
+void stackDelete(Stack* stack) {
+    free(stack->array);
+    free(stack);
 }
 
 int isLetter(char ch) {
@@ -231,11 +240,20 @@ void infixToPostfix(char* infix, char* postfix) {
                 printf("Invalid infix expression!\n");
                 return;
             } else { stackPop(stack); }
-        } else {
-            while (!stackEmpty(stack) && opPriority(infix[i]) <= opPriority(stackPeek(stack))) {
-                if (postfix[j] != ' ') postfix[j++] = ' ';
+        } 
+        else {
+            if (infix[i] == '^') {
+                while (stackPeek(stack) != '(' && opPriority(stackPeek(stack)) > opPriority(infix[i])) {
                 postfix[j++] = stackPop(stack);
                 postfix[j++] = ' ';
+                }
+            }
+            else {
+                while (!stackEmpty(stack) && (opPriority(stackPeek(stack)) >= opPriority(infix[i])) ) {
+                    if (postfix[j] != ' ') postfix[j++] = ' ';
+                    postfix[j++] = stackPop(stack);
+                    postfix[j++] = ' ';
+                }
             }
             stackPush(stack, infix[i]);
         }
@@ -245,9 +263,10 @@ void infixToPostfix(char* infix, char* postfix) {
         postfix[j++] = stackPop(stack);
     }
     postfix[j] = '\0';
+    stackDelete(stack);
 }
 
-Node* nodeValCreate(int val) {
+Node* nodeValCreate(float val) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->nodeType = VALUE;
     node->nodeUnion.value = val;
@@ -257,9 +276,8 @@ Node* nodeValCreate(int val) {
 Node* nodeVarCreate(char var[]) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->nodeType = VARIABLE;
-    for (int i = 0; i < strlen(var); ++i) {
-        node->nodeUnion.variable[i] = var[i];
-    }
+    strncpy(node->nodeUnion.variable, var, VARIABLE_LENGTH);
+    node->nodeUnion.variable[VARIABLE_LENGTH - 1] = '\0';
     return node;
 }
 
@@ -344,7 +362,7 @@ void treeInorder(Node * const node) {
         printf(")");
     }
     else if (node->nodeType == VALUE) {
-        printf("%d", node->nodeUnion.value);
+        printf("%.2f", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
         printf("%s", node->nodeUnion.variable);
@@ -360,7 +378,7 @@ void treePostorder(Node* const node) {
         printf("%c ", node->nodeUnion.op.op);
     }
     else if (node->nodeType == VALUE) {
-        printf("%d ", node->nodeUnion.value);
+        printf("%.2f ", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
         printf("%s ", node->nodeUnion.variable);
@@ -379,16 +397,15 @@ void treePrint(Node * const node, int level) {
         treePrint(node->nodeUnion.op.left, level + 1); 
     }
     else if (node->nodeType == VALUE) {
-        printf("%d\n", node->nodeUnion.value);
+        printf("%.2f\n", node->nodeUnion.value);
     }
     else if (node->nodeType == VARIABLE) {
-        for (int i = 0; i < strlen(node->nodeUnion.variable); ++i) {
-            printf("%c", node->nodeUnion.variable[i]);
-        }
+        printf("%s", node->nodeUnion.variable);
         printf("\n");
     }
 }
 
+// Упростить выражения, выполнив вычитание
 Node* treeSimplify(Node* node) {
     if (node == NULL) {
         return NULL;
@@ -400,13 +417,60 @@ Node* treeSimplify(Node* node) {
             if (node->nodeUnion.op.left != NULL && node->nodeUnion.op.right != NULL) {
                 if (node->nodeUnion.op.left->nodeType == VALUE && node->nodeUnion.op.right->nodeType == VALUE) {
                     int result = node->nodeUnion.op.left->nodeUnion.value - node->nodeUnion.op.right->nodeUnion.value;
+                    free(node->nodeUnion.op.left);
+                    free(node->nodeUnion.op.right);
                     free(node);
                     return nodeValCreate(result);
                 }
             }
         }
     }
+    return node;
+}
 
+float ipow(float x, int exp) {
+    if (exp == 0) return 1;
+    if (exp == 1) return x;
+    float base = x;
+    while (exp - 1 > 0) {
+        x *= base;
+        --exp;
+    }
+    return x;
+}
+
+Node* treeCalculate(Node * node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    if (node->nodeType == OPERATOR) {
+        node->nodeUnion.op.left = treeCalculate(node->nodeUnion.op.left);
+        node->nodeUnion.op.right = treeCalculate(node->nodeUnion.op.right);
+        if (node->nodeUnion.op.left != NULL && node->nodeUnion.op.right != NULL) {
+            if (node->nodeUnion.op.left->nodeType == VALUE && node->nodeUnion.op.right->nodeType == VALUE) {
+                if (node->nodeUnion.op.op == '+') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value + node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '-') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value - node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '^') {
+                    float res = ipow(node->nodeUnion.op.left->nodeUnion.value, node->nodeUnion.op.right->nodeUnion.value);
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '*') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value * node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+                if (node->nodeUnion.op.op == '/') {
+                    float res = node->nodeUnion.op.left->nodeUnion.value / node->nodeUnion.op.right->nodeUnion.value;
+                    return nodeValCreate(res);
+                }
+            }
+        }
+    }
     return node;
 }
 
@@ -422,21 +486,24 @@ int main() {
     printf("\n");
 
     printf("Task tree:\n");
-    treeSimplify(root);
-    treePrint(root, 0);
+    Node *snode =  treeSimplify(root);
+    treePrint(snode, 0);
     printf("\n");
 
     printf("Infix: ");
-    treeInorder(root);
+    treeInorder(snode);
     printf("\n");
     printf("Postfix: ");
-    treePostorder(root);
+    treePostorder(snode);
     printf("\n");
 
-    treeDelete(root);
+    Node *calcnode = treeCalculate(snode);
+    printf("Calculated:\n");
+    treePrint(calcnode, 0);
+    treeDelete(snode);
+    treeDelete(calcnode);
     return 0;
 }
-
 ```
 
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
@@ -447,98 +514,154 @@ int main() {
 
 ```
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
-Enter the infix expression: 6-5
+Enter the infix expression: 5-6
 Tree:
 -
-        5
-        6
+        6.00
+        5.00
 
 Task tree:
-1
+-1.00
 
-Infix: 1
-Postfix: 1
+Infix: -1.00
+Postfix: -1.00
+Calculated: -1.00
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
 Enter the infix expression: (12-4)^2+9
 Tree:
 +
-        9
+        9.00
         ^
-                2
+                2.00
                 -
-                        4
-                        12
+                        4.00
+                        12.00
 
 Task tree:
 +
-        9
+        9.00
         ^
-                2
-                8
+                2.00
+                8.00
 
-Infix: ((8^2)+9)
-Postfix: 8 2 ^ 9 +
+Infix: ((8.00^2.00)+9.00)
+Postfix: 8.00 2.00 ^ 9.00 +
+Calculated: 73.00
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
 Enter the infix expression: (123+45)+(3-2)*(9-1)
 Tree:
 +
         *
                 -
-                        1
-                        9
+                        1.00
+                        9.00
                 -
-                        2
-                        3
+                        2.00
+                        3.00
         +
-                45
-                123
+                45.00
+                123.00
 
 Task tree:
 +
         *
-                8
-                1
+                8.00
+                1.00
         +
-                45
-                123
+                45.00
+                123.00
 
-Infix: ((123+45)+(1*8))
-Postfix: 123 45 + 1 8 * +
+Infix: ((123.00+45.00)+(1.00*8.00))
+Postfix: 123.00 45.00 + 1.00 8.00 * +
+Calculated: 176.00
 kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
-Enter the infix expression: (123-ab)+(gg+op)+(200-50)
+Enter the infix expression: (19-5)/2+3
 Tree:
 +
-        -
-                50
-                200
-        +
-                +
-                        op
-                        gg
+        3.00
+        /
+                2.00
                 -
-                        ab
-                        123
+                        5.00
+                        19.00
 
 Task tree:
 +
-        150
-        +
-                +
-                        op
-                        gg
-                +
-                        ab
-                        123
+        3.00
+        /
+                2.00
+                14.00
 
-Infix: (((123+ab)+(gg+op))+150)
-Postfix: 123 ab + gg op + + 150 +
+Infix: ((14.00/2.00)+3.00)
+Postfix: 14.00 2.00 / 3.00 +
+Calculated: 10.00
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
+Enter the infix expression: 5^(3^2)
+Tree:
+^
+        ^
+                2.00
+                3.00
+        5.00
+
+Task tree:
+^
+        ^
+                2.00
+                3.00
+        5.00
+
+Infix: (5.00^(3.00^2.00))
+Postfix: 5.00 3.00 2.00 ^ ^
+Calculated:
+1953125.00
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
+Enter the infix expression: (5^3)^2
+Tree:
+^
+        2.00
+        ^
+                3.00
+                5.00
+
+Task tree:
+^
+        2.00
+        ^
+                3.00
+                5.00
+
+Infix: ((5.00^3.00)^2.00)
+Postfix: 5.00 3.00 ^ 2.00 ^
+Calculated:
+15625.00
+kristinab@LAPTOP-SFU9B1F4:/mnt/c/Users/Admin/Projects/C/lab24$ gcc lab24.c && ./a.out
+Enter the infix expression: 5^3^2
+Tree:
+^
+        ^
+                2.00
+                3.00
+        5.00
+
+Task tree:
+^
+        ^
+                2.00
+                3.00
+        5.00
+
+Infix: (5.00^(3.00^2.00))
+Postfix: 5.00 3.00 2.00 ^ ^
+Calculated:
+1953125.00
 ```
 
 ## 9. Дневник отладки должен содержать дату и время сеансов отладки и основные события (ошибки в сценарии и программе, нестандартные ситуации) и краткие комментарии к ним. В дневнике отладки приводятся сведения об использовании других ЭВМ, существенном участии преподавателя и других лиц в написании и отладке программы.
 
 | № |  Лаб. или дом. | Дата | Время | Событие | Действие по исправлению | Примечание |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| 1 | дом. | 01.06.23 | 13:00 | Выполнение лабораторной работы | - | - |
+| 1 | дом. | 03.06.23 | 13:00 | Выполнение лабораторной работы | - | - |
 
 ## 10. Замечания автора по существу работы
 
